@@ -1,0 +1,138 @@
+@font-face {
+	font-family: RadCondensed;
+	src: url('radiance-regularcondensed-fixed-webfont.woff2') format('woff2'),
+         url('radiance-regularcondensed-fixed-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+a {
+	outline: none;
+}
+
+body {
+    font-family: 'RadCondensed';
+	margin: 0;
+	padding: 0;
+	max-width: 100%;
+}
+
+header {
+	background-color: #150f19;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+h1 {
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+#wrap-search {
+	width: 300px;
+	padding: 10px;
+	margin: 0 auto;
+}
+
+#search {
+	width: 280px;
+	padding: 10px;
+}
+
+input::placeholder {
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+}
+
+.card-info {
+	display: inline-flex;
+	justify-content: center;
+	border: 1px solid black;
+	width: 300px;
+}
+
+.card {
+	border: 1px solid black;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.wrap-card-name {
+	display: flex;
+	justify-content: flex-start;
+	padding: 10px
+}
+
+.card-mini-img {
+	width: 50px;
+}
+
+.card-name {
+	margin-left: 10px;
+	color: #fff;
+}
+
+.card-set {
+	text-align: center
+}
+
+.card-large-img {
+	width: 250px;
+	margin: 0 auto
+}
+
+.card-text {
+	padding: 10px;
+}
+
+.card-text span {color:black}
+
+.colorRed {
+	color: #d35151;
+}
+
+.colorBlue {
+	color: #60adc9;
+}
+
+.colorBlack {
+	color: #41474d;
+}
+
+.colorGreen {
+	color: #86d480;
+}
+
+.colorOrange {
+	color: #DE9831;
+}
+
+.bgRed {
+	background-color: #d35151;
+}
+
+.bgBlue {
+	background-color: #60adc9;
+}
+
+.bgBlack {
+	background-color: #41474d;
+}
+
+.bgGreen {
+	background-color: #86d480;
+}
+
+.bgOrange {
+	background-color: #DE9831;
+}
+
+#footer {
+	width: 100%;
+	text-align: center;
+	font-size: 0.8em;
+	margin: 50px 0;
+	font-style: italic;
+}

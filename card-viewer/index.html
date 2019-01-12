@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Jolixia</title>
+		<!-- Codificación de caracteres -->
+		<meta charset="UTF-8">
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" 
+			  integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" 
+			  crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="https://steamcdn-a.akamaihd.net/apps/artifact/images/favicon.png" type="image/png">
+	</head>
+
+	<body>
+		<header>
+			<a href="https://playartifact.com" target="_blank">
+				<img id="logo" src="https://steamcdn-a.akamaihd.net/apps/artifact/images/header/artifact_logo_header.png" alt="Logo">
+			</a>
+		</header>
+
+		<main id="app">
+			<section id="wrap-search">
+				<input id="search" type="text" placeholder="&#xf002" v-model="search" v-on:keyup="onSearch()">
+			</section>
+
+			<section id="viewCards">
+				<section class="card-info" v-for="(card, index) in fullCollection">
+					<section id="card.id" class="card">
+						<section class="wrap-card-name"  v-bind:class="'bg' + card.color">
+							<img class="card-mini-img" v-bind:src="card.mini_img" v-bind:alt="card.name + ' mini'"/>
+							<p class="card-name">{{ card.name }}</p>
+						</section>
+						
+						<p class="card-set">{{ card.set }}</p>
+						<p class="card-color" v-bind:class="'bg' + card.color">{{ card.color }}</p>
+						<img class="card-large-img" v-bind:src="card.large_img" v-bind:alt="card.name"/>
+						<p class="card-text" v-bind:class="'bg' + card.color" v-html="card.text" v-show="card.type === 'Hero'"></p>
+					</section>
+				</section>
+			</section>
+		</main>
+			
+		<footer id="footer">
+			{{ currentYear() }}
+		</footer>
+
+		<!-- JS -->
+		<script src="https://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>
