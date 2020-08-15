@@ -62,13 +62,12 @@ missingno_ascii: str = '''
 ###################   `##  #### #+  #     z@##@#########
 '''
 
-# print('Which Pokémon are you looking for?')
-#pkmn: str = input().lower()
-pkmn: str = 'ditto'
+print('Enter an existing Pokémon:')
+pkmn: str = input().lower()
 
-#if pkmn == 'missingno':
-#    print(missingno_ascii)
-#    quit()
+if pkmn == 'missingno':
+    print(missingno_ascii)
+    quit()
 
 resp = requests.get('https://pokeapi.co/api/v2/pokemon/{}'.format(pkmn))
 
@@ -93,8 +92,7 @@ else:
         desc_id: int = random.randint(0, len(eng_descriptions) + 1)
         desc = eng_descriptions[desc_id]
 
-    print(desc)
-    print()
+    print(desc + '\n')
 
     # ABILITIES
     print('=> ABILITIES\n')
@@ -121,7 +119,5 @@ else:
 
     for move in resp_json['moves']:
         print(move['move']['name'].capitalize())
-
-
 
     print()
