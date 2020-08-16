@@ -19,5 +19,7 @@ Or:
 
     python shelldex.py shellder
 
+If a Pokémon has a composed name, it must be written separated by a hyphen (for example, "tapu-koko").
+
 ## Future
 I will keep adding stuff while I have something to learn... And while I am having fun doing it.
