@@ -1,3 +1,4 @@
+import sys
 from typing import List
 import requests
 import json
@@ -62,14 +63,23 @@ missingno_ascii: str = '''
 ###################   `##  #### #+  #     z@##@#########
 '''
 
-print('Enter an existing Pokémon:')
-pkmn: str = input().lower()
+n_args = len(sys.argv)
+pkmn: str = ''
+
+if (n_args == 1):
+    print('Enter an existing Pokémon:')
+    pkmn = input().lower()
+elif(n_args == 2):
+    pkmn = sys.argv[1]
+else:
+    print('Too many arguments, only one Pokémon at once')
+    quit()
 
 if pkmn == 'missingno':
     print(missingno_ascii)
     quit()
 
-resp = requests.get('https://pokeapi.co/api/v2/pokemon/{}'.format(pkmn))
+resp = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pkmn}')
 
 if resp.status_code != 200:
     print('\nNo information recorded about such Pokémon\n')
@@ -78,10 +88,11 @@ else:
     resp_json = resp.json()
 
     # HEADER INFO
-    print('\n#{} {}\n'.format(resp_json['id'], pkmn.upper()))
+    dex_id: int = resp_json['id']
+    print(f'\n#{dex_id} {pkmn.upper()}\n')
     print(' / '.join([tp['type']['name'].capitalize() for tp in resp_json['types']]) + '\n')
 
-    resp_desc = requests.get('https://pokeapi.co/api/v2/pokemon-species/{}'.format(pkmn))
+    resp_desc = requests.get(f'https://pokeapi.co/api/v2/pokemon-species/{pkmn}')
     desc: str = ''
 
     if resp_desc.status_code != 200:
@@ -111,8 +122,9 @@ else:
                 if d['language']['name'] == 'en' and d['version_group']['name'] == last_game:
                     desc = d['flavor_text']
                     break
-
-        print('{}: {}\n'.format(ab['ability']['name'].capitalize(), desc))
+        
+        name_ab: str = ab['ability']['name'].capitalize()
+        print(f'{name_ab}: {desc}\n')
 
     # MOVES
     print('=> MOVES\n')
