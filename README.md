@@ -14,6 +14,10 @@ You need Python 3. I started developing it with Python 3.7.
 Just run:
 
     python shelldex.py
-    
+
+Or:
+
+    python shelldex.py shellder
+
 ## Future
 I will keep adding stuff while I have something to learn... And while I am having fun doing it.
