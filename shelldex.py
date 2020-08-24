@@ -4,6 +4,8 @@ import requests
 import json
 import random
 
+Response = requests.models.Response
+
 missingno_ascii: str = '''
 ################@@##########   ## z ##  ## #############
 ########################### `` zz#  # ++  #@@###########
@@ -63,23 +65,23 @@ missingno_ascii: str = '''
 ###################   `##  #### #+  #     z@##@#########
 '''
 
-n_args = len(sys.argv)
+n_args: int = len(sys.argv)
 pkmn: str = ''
 
-if (n_args == 1):
+if n_args == 1:
     print('Enter an existing Pokémon:')
     pkmn = input().lower()
-elif(n_args == 2):
+elif n_args == 2:
     pkmn = sys.argv[1]
 else:
-    print('Too many arguments, only one Pokémon at once')
+    print('\nToo many arguments, only one Pokémon at once\n')
     quit()
 
 if pkmn == 'missingno':
     print(missingno_ascii)
     quit()
 
-resp = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pkmn}')
+resp: Response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pkmn}')
 
 if resp.status_code != 200:
     print('\nNo information recorded about such Pokémon\n')
@@ -92,7 +94,7 @@ else:
     print(f'\n#{dex_id} {pkmn.upper()}\n')
     print(' / '.join([tp['type']['name'].capitalize() for tp in resp_json['types']]) + '\n')
 
-    resp_desc = requests.get(f'https://pokeapi.co/api/v2/pokemon-species/{pkmn}')
+    resp_desc: Response = requests.get(f'https://pokeapi.co/api/v2/pokemon-species/{pkmn}')
     desc: str = ''
 
     if resp_desc.status_code != 200:
@@ -109,7 +111,7 @@ else:
     print('=> ABILITIES\n')
 
     for ab in resp_json['abilities']:
-        resp_ability = requests.get(ab['ability']['url'])
+        resp_ability: Response = requests.get(ab['ability']['url'])
 
         if resp_ability.status_code != 200:
             desc = 'COULDN\'T GET ABILITY DESCRIPTION, TRY AGAIN LATER'
