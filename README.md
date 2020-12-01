@@ -1,2 +1,3 @@
-# advent-of-code-2020
-Exercises of Advent of Code 2020
+# Advent of Code 2020
+
+I will try to do them while learning some Rust.
