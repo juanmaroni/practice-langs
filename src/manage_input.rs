@@ -29,3 +29,17 @@ pub fn numbers_from_file(filename: &str, year: i16) -> Vec<i16> {
 
     numbers
 }
+
+pub fn passwords_from_file(filename: &str) -> Vec<String>{
+    let mut passwords: Vec<String> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(pw) = line {
+                passwords.push(pw);
+            }
+        }
+    }
+
+    passwords
+}
