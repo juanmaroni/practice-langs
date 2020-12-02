@@ -1,3 +1,4 @@
+mod manage_input;
 mod day01;
 
 fn main() {
@@ -8,5 +9,6 @@ fn main() {
     let ans_day1_part2: i32 = day01::answer_day1_part2();
     println!("The answer for day 1 part 1 is: {}", ans_day1_part2);
 
-    
+    // December, 2
+
 }
