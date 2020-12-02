@@ -1,4 +1,5 @@
 // Advent of Code 2020: December, 1
+// Day 1: Report Repair
 
 use std::fs::File;
 use std::io::{self, BufRead};
