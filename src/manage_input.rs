@@ -43,3 +43,19 @@ pub fn passwords_from_file(filename: &str) -> Vec<String>{
 
     passwords
 }
+
+pub fn grid_from_file(filename: &str) -> (String, usize) {
+    let mut grid: String = "".to_owned();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(path) = line {
+                grid += &(path + "\n");
+            }
+        }
+    }
+
+    let len_pattern: usize = grid.find('\n').unwrap();
+
+    (grid, len_pattern)
+}
