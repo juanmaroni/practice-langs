@@ -21,26 +21,18 @@ impl PasswordPolicy {
     fn valid_password_repeat(&self) -> bool {
         let char_reps: u8 = self.password.matches(self.letter).count() as u8;
     
-        if char_reps >= self.min && char_reps <= self.max {
-            return true;
-        }
-        
-        false
+        char_reps >= self.min && char_reps <= self.max
     }
 
     fn valid_password_position(&self) -> bool {
         // The system index starts at 1, so I will convert to 0
         let index_min: usize = usize::from(self.min - 1);
         let index_max: usize = usize::from(self.max - 1);
+
+        let char_first_pos: char = self.password.chars().nth(index_min).unwrap();
+        let char_last_pos: char = self.password.chars().nth(index_max).unwrap();
     
-        if (self.password.chars().nth(index_min).unwrap() == self.letter
-            && self.password.chars().nth(index_max).unwrap() != self.letter)
-            || (self.password.chars().nth(index_min).unwrap() != self.letter
-            && self.password.chars().nth(index_max).unwrap() == self.letter) {
-            return true;
-        }
-        
-        false
+        (char_first_pos == self.letter && char_last_pos != self.letter) || (char_first_pos != self.letter && char_last_pos == self.letter)
     }
 }
 
