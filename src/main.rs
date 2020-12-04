@@ -2,6 +2,7 @@ mod manage_input;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 fn main() {
     // December, 1
@@ -20,4 +21,9 @@ fn main() {
     let ans_day3: (usize, usize) = day03::answers_day3();
     println!("The answer for day 3 part 1 is: {}", ans_day3.0);
     println!("The answer for day 3 part 2 is: {}", ans_day3.1);
+
+    // December, 4
+    let ans_day4: (usize, usize) = day04::answers_day4();
+    println!("The answer for day 4 part 1 is: {}", ans_day4.0);
+    println!("The answer for day 4 part 2 is: {}", ans_day4.1);
 }
