@@ -19,8 +19,6 @@ fn validate_passport() -> (usize, usize) {
     let mut invalid_passports: Vec<HashMap<String, String>> = Vec::new();
     let mut n_valid: usize = passports.len();
 
-    println!("N Passports: {}", passports.len());
-
     for p in passports {
         for req in required_fields.iter() {
             if p.keys().len() < N_REQ_FIELDS || !p.contains_key(*req) {
@@ -35,8 +33,6 @@ fn validate_passport() -> (usize, usize) {
     valid_passports.retain(|p| !invalid_passports.contains(p));
     let mut n_valid_strict = n_valid;
 
-    println!("N Valid Passports: {}", valid_passports.len());
-
     for p in valid_passports {
         let keys = p.keys();
 
@@ -44,6 +40,11 @@ fn validate_passport() -> (usize, usize) {
             let v = p.get(k).unwrap();
 
             if k == "byr" {
+                if v.len() != 4 {
+                    n_valid_strict -= 1;
+                    break;
+                }
+
                 let byr: u16 = v.parse::<u16>().unwrap();
 
                 if byr < 1920 || byr > 2002 {
@@ -52,6 +53,11 @@ fn validate_passport() -> (usize, usize) {
                 }
             }
             else if k == "iyr" {
+                if v.len() != 4 {
+                    n_valid_strict -= 1;
+                    break;
+                }
+
                 let iyr: u16 = v.parse::<u16>().unwrap();
 
                 if iyr < 2010 || iyr > 2020 {
@@ -60,6 +66,11 @@ fn validate_passport() -> (usize, usize) {
                 }
             }
             else if k == "eyr" {
+                if v.len() != 4 {
+                    n_valid_strict -= 1;
+                    break;
+                }
+
                 let eyr: u16 = v.parse::<u16>().unwrap();
 
                 if eyr < 2020 || eyr > 2030 {
@@ -72,7 +83,12 @@ fn validate_passport() -> (usize, usize) {
                 let hgt: u16 = v.trim_matches(char::is_alphabetic).parse::<u16>().unwrap();
                 let hgt_mag: &str = &v[hgt_len-2..];
                 
-                if hgt_mag == "in" {
+                if hgt_mag != "in" && hgt_mag != "cm" {
+                    // Not checking this was really dumb from my part, it took me so long to realize...
+                    n_valid_strict -= 1;
+                    break;
+                }
+                else if hgt_mag == "in" {
                     if hgt < 59 || hgt > 76 {
                         n_valid_strict -= 1;
                         break;
@@ -91,7 +107,7 @@ fn validate_passport() -> (usize, usize) {
                 let hexadec_chars: [char; 16] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                                 'a', 'b', 'c', 'd', 'e', 'f'];
 
-                if hcl[0] != '#' {
+                if hcl[0] != '#' || hcl.len() != 7 {
                     n_valid_strict -= 1;
                     break;
                 }
@@ -118,6 +134,11 @@ fn validate_passport() -> (usize, usize) {
             else if k == "pid" {
                 let pid: Vec<char> = v.chars().collect();
 
+                if pid.len() != 9 {
+                    n_valid_strict -= 1;
+                    break;
+                }
+
                 for d in pid {
                     if !d.is_digit(10) {
                         n_valid_strict -= 1;
@@ -126,10 +147,7 @@ fn validate_passport() -> (usize, usize) {
                 }
             }
         }
-    }
-
-    println!("{}", n_valid_strict);
-    
+    }    
     
     (n_valid, n_valid_strict)
 }
