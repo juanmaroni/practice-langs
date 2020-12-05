@@ -3,6 +3,7 @@ mod day01;
 mod day02;
 mod day03;
 mod day04;
+mod day05;
 
 fn main() {
     // December, 1
@@ -26,4 +27,9 @@ fn main() {
     let ans_day4: (usize, usize) = day04::answers_day4();
     println!("The answer for day 4 part 1 is: {}", ans_day4.0);
     println!("The answer for day 4 part 2 is: {}", ans_day4.1);
+
+    // December, 5
+    let ans_day5 = day05::answers_day5();
+    println!("The answer for day 5 part 1 is: {}", ans_day5.0);
+    println!("The answer for day 5 part 2 is: {}", ans_day5.1);
 }
