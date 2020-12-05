@@ -6,7 +6,6 @@ use crate::manage_input;
 use std::collections::HashMap;
 
 pub fn answers_day4() -> (usize, usize) {
-    
     validate_passport()
 }
 
