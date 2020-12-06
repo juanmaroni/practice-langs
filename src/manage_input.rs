@@ -87,3 +87,52 @@ pub fn read_passports(filename: &str) -> Vec<HashMap<String, String>> {
 
     passports
 }
+
+pub fn read_answers(filename: &str) -> (Vec<(u16, Vec<char>)>, u16) {
+    let mut answers_by_people: Vec<(u16, Vec<char>)> = Vec::new();
+    let mut n_people: u16 = 0;
+    let mut answers: Vec<char> = Vec::new();
+    let mut everyone_answered: u16 = 0;
+
+    if let Ok(lines) = read_lines(filename) {
+        // This will merge every answer from a group and then I will use it to count
+        // their common answers
+        let mut merge_answers: String = "".to_owned();
+
+        for line in lines {
+            if let Ok(person) = line {
+                if !person.is_empty() {
+                    n_people += 1;
+                    merge_answers = merge_answers + &person;
+
+                    for a in person.chars() {
+                        if !answers.contains(&a) {
+                            answers.push(a);
+                        }
+                    }
+                }
+                else {
+                    if !answers.is_empty() {
+                        for a in &answers {
+                            let c: u16 = merge_answers.matches(*a).count() as u16;
+
+                            if c == n_people {
+                                everyone_answered += 1;
+                            }
+                        }
+                        
+                        answers_by_people.push((n_people, answers));
+
+                        // Restarting variables for next group.
+                        merge_answers = "".to_string();
+                        answers = Vec::new();
+                        n_people = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    // (Part1, Part2)
+    (answers_by_people, everyone_answered)
+}
