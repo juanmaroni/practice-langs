@@ -162,3 +162,18 @@ pub fn get_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
     //println!("{:?}", bags_collection);
     bags_collection
 }
+
+pub fn read_instructions(filename: &str) -> Vec<(String, i16)> {
+    let mut instructions: Vec<(String, i16)> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(instr) = line {
+                let args: Vec<&str> = instr.split_whitespace().collect();
+                instructions.push((args[0].to_string(), args[1].parse::<i16>().unwrap()));
+            }
+        }
+    }
+
+    instructions
+}
