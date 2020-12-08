@@ -3,6 +3,7 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 use std::collections::HashMap;
+use regex::Regex;
 
 // From documentation "Rust by Example"
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>> where P:AsRef<Path>, {
@@ -135,4 +136,29 @@ pub fn read_answers(filename: &str) -> (Vec<(u16, Vec<char>)>, u16) {
 
     // (Part1, Part2)
     (answers_by_people, everyone_answered)
+}
+
+// First time using Regex crate
+pub fn get_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
+    let re_parent = Regex::new(r"^(?P<parent_bag>[\w]+ [\w]+)").unwrap();
+    let re_children = Regex::new(r"(?P<capacity>[0-9]+) (?P<child_bag>[\w]+ [\w]+)").unwrap();
+    let mut bags_collection: HashMap<String, HashMap<String, u8>> = HashMap::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(bags) = line {
+                let parent = re_parent.find(&bags).unwrap().as_str().to_string();
+                let mut map_children_bags: HashMap<String, u8> = HashMap::new();
+
+                for ch in re_children.captures_iter(&bags) {
+                    map_children_bags.insert(Some(&ch[2]).unwrap().to_string(), Some(&ch[1]).unwrap().parse::<u8>().unwrap());
+                }
+            
+                bags_collection.insert(parent, map_children_bags);
+            }
+        }
+    }
+
+    //println!("{:?}", bags_collection);
+    bags_collection
 }
