@@ -177,3 +177,18 @@ pub fn read_instructions(filename: &str) -> Vec<(String, i16)> {
 
     instructions
 }
+
+pub fn get_numbers(filename: &str) -> Vec<u64> {
+    let mut numbers: Vec<u64> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(number) = line {
+                let n: u64 = number.parse::<u64>().unwrap();
+                numbers.push(n);
+            }
+        }
+    }
+
+    numbers
+}
