@@ -192,3 +192,36 @@ pub fn get_numbers(filename: &str) -> Vec<u64> {
 
     numbers
 }
+
+pub fn generate_matrix(filename: &str) -> Vec<Vec<char>> {
+    let mut matrix: Vec<Vec<char>> = Vec::new();
+
+    // I will fill borders with '_' to check bounds.
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(row) = line {
+                let mut m_row: Vec<char> = Vec::new();
+                m_row.push('_');
+                
+                for r in row.chars() {
+                    m_row.push(r);
+                }
+
+                m_row.push('_');
+                
+                matrix.push(m_row);
+            }
+        }
+    }
+
+    let mut m_blank: Vec<char> = Vec::new();
+
+    for _ in 0..matrix[0].len() {
+        m_blank.push('_');
+    }
+
+    matrix.insert(0, m_blank.clone());
+    matrix.push(m_blank);
+
+    matrix
+}
