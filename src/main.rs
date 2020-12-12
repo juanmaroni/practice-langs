@@ -10,6 +10,7 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
 extern crate regex;
 
 fn main() {
@@ -69,4 +70,9 @@ fn main() {
     let ans_day11 = day11::answers_day11();
     println!("The answer for day 11 part 1 is: {}", ans_day11.0);
     //println!("The answer for day 11 part 2 is: {}", ans_day11.1);
+
+    // December, 12
+    let ans_day12 = day12::answers_day12();
+    println!("The answer for day 12 part 1 is: {}", ans_day12.0);
+    println!("The answer for day 12 part 2 is: {}", ans_day12.1);
 }

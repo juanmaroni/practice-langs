@@ -208,7 +208,6 @@ pub fn generate_matrix(filename: &str) -> Vec<Vec<char>> {
                 }
 
                 m_row.push('_');
-                
                 matrix.push(m_row);
             }
         }
@@ -224,4 +223,21 @@ pub fn generate_matrix(filename: &str) -> Vec<Vec<char>> {
     matrix.push(m_blank);
 
     matrix
+}
+
+pub fn get_ship_instructions(filename: &str) -> Vec<(char, i16)> {
+    let mut instructions: Vec<(char, i16)> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(instr) = line {
+                let instr_chars: Vec<char> = instr.chars().collect();
+                let dir = instr_chars[0];
+                let movement: String = instr_chars[1..].iter().collect();
+                instructions.push((dir, movement.parse::<i16>().unwrap()));
+            }
+        }
+    }
+
+    instructions
 }
