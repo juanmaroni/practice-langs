@@ -241,3 +241,43 @@ pub fn get_ship_instructions(filename: &str) -> Vec<(char, i16)> {
 
     instructions
 }
+
+pub fn get_bus_schedule(filename: &str) -> (u32, Vec<u16>) {
+    let mut schedule: (u32, Vec<u16>) = (0, Vec::new());
+
+    if let Ok(lines) = read_lines(filename) {
+        let mut is_timestamp: bool = true;
+
+        for line in lines {
+            if let Ok(note) = line {
+                match is_timestamp {
+                    true => {
+                        schedule.0 = note.parse::<u32>().unwrap();
+                        is_timestamp = false;
+                    },
+                    false => {
+                        schedule.1 = note.split(',').filter(|id| id.parse::<u16>().is_ok()).map(|id| id.parse::<u16>().unwrap()).collect();
+                        //is_timestamp = true; // Not necessary, because there are only 2 lines.
+                    }
+                }
+            }
+        }
+    }
+
+    schedule
+}
+
+pub fn get_bus_ids(filename: &str) -> Vec<u16> {
+    let mut ids: Vec<u16> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines.skip(1) {
+            if let Ok(note) = line {
+                // I will replace 'x' with '0' so I can manage it easily.
+                ids = note.replace("x", "0").split(',').map(|id| id.parse::<u16>().unwrap()).collect();
+            }
+        }
+    }
+    
+    ids
+}
