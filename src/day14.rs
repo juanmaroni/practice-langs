@@ -14,19 +14,18 @@ pub fn answers_day14() -> (u64, u64) {
 fn sum_unique_masks(data: Vec<(HashMap<usize, char>, HashMap<u64, u64>)>) -> u64 {
     let mut sum: u64 = 0;
     // Keeping track of used memory address.
-    let mut mem_passed: Vec<u64> = Vec::new();
+    let mut used_address: Vec<u64> = Vec::new();
 
     for d in data.iter().rev() {
         let bitmask = &d.0;
         let mem_ops = &d.1;
         
         for k in mem_ops.keys() {
-            if !mem_passed.contains(k) {
+            if !used_address.contains(k) {
                 let v: &u64 = mem_ops.get(k).unwrap();
                 sum += apply_mask(bitmask.clone(), *v);
-                mem_passed.push(*k);
+                used_address.push(*k);
             }
-            
         }
     }
 
@@ -38,8 +37,7 @@ fn apply_mask(bitmask: HashMap<usize, char>, n: u64) -> u64 {
     let mut bin_bits: Vec<char> = format!("{:064b}", n).chars().rev().collect();
 
     for k in bm.keys() {
-        bin_bits[*k as usize] = 
-        *bm.get(k).unwrap();
+        bin_bits[*k as usize] = *bm.get(k).unwrap();
     }
 
     let bin: String = bin_bits.into_iter().rev().collect();
