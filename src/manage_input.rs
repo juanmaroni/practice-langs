@@ -281,3 +281,43 @@ pub fn get_bus_ids(filename: &str) -> Vec<u16> {
     
     ids
 }
+
+// Didn't check the input before writing the parser.
+// I thought it was only ONE mask for MULTIPLE memory operations.
+// So I had to rewrite. And probably overdid it.
+pub fn get_memory_data(filename: &str) -> Vec<(HashMap<usize, char>, HashMap<u64, u64>)> {
+    let mut piece: Vec<(HashMap<usize, char>, HashMap<u64, u64>)> = Vec::new();
+    let mut bitmask: HashMap<usize, char> = HashMap::new();
+    let mut mem_ops: HashMap<u64, u64>  = HashMap::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(data) = line {
+                if &data[0..2] == "ma" {
+                    if !bitmask.is_empty() && !mem_ops.is_empty() {
+                        piece.push((bitmask.clone(), mem_ops.clone()));
+                        bitmask.clear();
+                        mem_ops.clear();
+                    }
+
+                    for (i, b) in data.replace("mask = ", "").chars().rev().enumerate() {
+                        if b.is_digit(2) {
+                            bitmask.insert(i, b);
+                        }
+                    }
+                }
+                else {
+                    let mut pair: Vec<u64> = Vec::new();
+
+                    for n in data.replace("mem[", "").replace("]", "").split(" = ").map(|n| n.to_string().parse::<u64>().unwrap()) {
+                        pair.push(n);
+                    }
+
+                    mem_ops.insert(pair[0], pair[1]);
+                }
+            }
+        }
+    }
+
+    piece
+}
