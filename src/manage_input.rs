@@ -321,3 +321,17 @@ pub fn get_memory_data(filename: &str) -> Vec<(HashMap<usize, char>, HashMap<u64
 
     piece
 }
+
+pub fn get_game_nums(filename: &str) -> Vec<usize> {
+    let mut nums: Vec<usize> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(num) = line {
+                nums = num.split(",").map(|n| n.to_string().parse::<usize>().unwrap()).collect();
+            }
+        }
+    }
+
+    nums
+}
