@@ -335,3 +335,26 @@ pub fn get_game_nums(filename: &str) -> Vec<usize> {
 
     nums
 }
+
+// Reading the notes and dividing in three parts: rules, my ticket and nearby tickets.
+pub fn read_notes(filename: &str) -> Vec<Vec<String>> {
+    let mut notes: Vec<Vec<String>> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        let mut part: Vec<String> = Vec::new();
+
+        for line in lines {
+            if let Ok(note) = line {
+                if !note.is_empty() {
+                    part.push(note);
+                }
+                else {
+                    notes.push(part);
+                    part = Vec::new();
+                }
+            }
+        }
+    }
+
+    notes
+}
