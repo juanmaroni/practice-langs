@@ -358,3 +358,18 @@ pub fn read_notes(filename: &str) -> Vec<Vec<String>> {
 
     notes
 }
+
+pub fn get_cubes(filename: &str) -> Vec<Vec<bool>> {
+    let mut cubes: Vec<Vec<bool>> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(cube) = line {
+                let row: Vec<bool> = cube.chars().map(|c| c == '#').collect();
+                cubes.push(row);
+            }
+        }
+    }
+
+    cubes
+}
