@@ -373,3 +373,17 @@ pub fn get_cubes(filename: &str) -> Vec<Vec<bool>> {
 
     cubes
 }
+
+pub fn get_expressions(filename: &str) -> Vec<String> {
+    let mut expressions: Vec<String> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(e) = line {
+                expressions.push(e.replace(" ", ""));
+            }
+        }
+    }
+
+    expressions
+}
