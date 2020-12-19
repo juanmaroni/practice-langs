@@ -387,3 +387,24 @@ pub fn get_expressions(filename: &str) -> Vec<String> {
 
     expressions
 }
+
+pub fn get_rules_and_messages(filename: &str) -> (Vec<String>, Vec<String>) {
+    let mut rules_and_messages: Vec<String> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(l) = line {
+                rules_and_messages.push(l);
+            }
+        }
+    }
+
+    // The input has two parts and I use chunks to separate them by the empty line.
+    let input_chunks: Vec<&[String]> = rules_and_messages
+    .chunks(rules_and_messages.iter().position(|l| l.is_empty()).unwrap()).collect();
+
+    let rules = input_chunks[0].to_vec();
+    let messages = input_chunks[1][1..].to_vec();
+
+    (rules, messages)
+}
