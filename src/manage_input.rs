@@ -408,3 +408,29 @@ pub fn get_rules_and_messages(filename: &str) -> (Vec<String>, Vec<String>) {
 
     (rules, messages)
 }
+
+pub fn get_tiles(filename: &str) -> HashMap<u32, Vec<String>> {
+    let mut tiles: HashMap<u32, Vec<String>> = HashMap::new();
+    let mut k: u32 = 0;
+    let mut input: Vec<String> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(mut t) = line {
+                if t.contains("Tile") {
+                    t.retain(|c| c.is_digit(10));
+                    k = t.parse::<u32>().unwrap();
+                }
+                else if t.is_empty() {
+                    tiles.insert(k, input);
+                    input = Vec::new();
+                }
+                else {
+                    input.push(t);
+                }
+            }
+        }
+    }
+    
+    tiles
+}
