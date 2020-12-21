@@ -19,6 +19,7 @@ mod day17;
 mod day18;
 mod day19;
 mod day20;
+mod day21;
 extern crate regex;
 extern crate peg;
 
@@ -128,4 +129,8 @@ fn main() {
     //println!("The answer for day 20 part 1 is: {}", ans_day20.0);
     //println!("The answer for day 20 part 2 is: {}", ans_day20.1);
 */
+    // December, 21
+    let ans_day21 = day21::answers_day21();
+    //println!("The answer for day 21 part 1 is: {}", ans_day21.0);
+    //println!("The answer for day 21 part 2 is: {}", ans_day21.1);
 }

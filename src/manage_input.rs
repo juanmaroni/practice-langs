@@ -434,3 +434,19 @@ pub fn get_tiles(filename: &str) -> HashMap<u32, Vec<String>> {
     
     tiles
 }
+
+pub fn get_food(filename: &str) -> Vec<(Vec<String>, Vec<String>)> {
+    let mut foods: Vec<(Vec<String>, Vec<String>)> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(f) = line {
+                let clean = f.replace(&['(', ')', ','][..], "");
+                let sep: Vec<String> = clean.split(" contains ").map(|s| s.to_string()).collect();
+                foods.push((sep[0].split(" ").map(|s| s.to_string()).collect(), sep[1].split(" ").map(|s| s.to_string()).collect()));
+            }
+        }
+    }
+    
+    foods
+}
