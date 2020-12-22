@@ -450,3 +450,29 @@ pub fn get_food(filename: &str) -> Vec<(Vec<String>, Vec<String>)> {
     
     foods
 }
+
+pub fn get_decks(filename: &str) -> Vec<Vec<u8>> {
+    let mut decks: Vec<Vec<u8>> = Vec::new();
+    let mut cards: Vec<u8> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(card) = line {
+                if card.contains("P") {
+                    continue;
+                }
+                else if card.is_empty() {
+                    decks.push(cards);
+                    cards = Vec::new();
+                }
+                else {
+                    cards.push(card.parse::<u8>().unwrap());
+                }
+            }
+        }
+    }
+
+    //println!("{:?}", decks);
+
+    decks
+}
