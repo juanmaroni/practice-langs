@@ -23,7 +23,7 @@ fn play_game(cups: &Vec<u8>, rounds: usize) -> Vec<u8> {
         let removed: [u8; 3] = [play_cups[1], play_cups[2], play_cups[3]];
         play_cups.drain(1..4);
         //println!("removed cups: {:?}", &play_cups);
-        //println!("pikcup: {:?}", removed);
+        //println!("pick up: {:?}", removed);
 
         let destination = find_next(&play_cups, removed, current);
         //println!("destination: {:?}", destination);
@@ -38,6 +38,8 @@ fn play_game(cups: &Vec<u8>, rounds: usize) -> Vec<u8> {
     play_cups
 }
 
+// Finding label equal to the current cup's label minus one, that
+// is not in the removed group.
 fn find_next(cups: &Vec<u8>, removed: [u8; 3], current: u8) -> u8 {
     let mut next = current - 1;
 
