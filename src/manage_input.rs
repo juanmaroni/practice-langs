@@ -472,7 +472,19 @@ pub fn get_decks(filename: &str) -> Vec<Vec<u8>> {
         }
     }
 
-    //println!("{:?}", decks);
-
     decks
+}
+
+pub fn get_cups(filename: &str) -> Vec<u8> {
+    let mut cups: Vec<u8> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(c) = line {
+                cups = c.chars().map(|label| label.to_digit(10).unwrap() as u8).collect();
+            }
+        }
+    }
+
+    cups
 }
