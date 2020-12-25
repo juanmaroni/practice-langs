@@ -28,19 +28,20 @@ extern crate regex;
 extern crate peg;
 
 fn main() {
-    
     // December, 1
     let ans_day1 = day01::answers_day1();
     println!(
         "The answer for day 1 part 1 is: {}\nThe answer for day 1 part 2 is: {}\n",
         ans_day1.0, ans_day1.1
     );
-/*
-    // December, 2
-    let ans_day2: (u16, u16) = day02::answers_day2();
-    println!("The answer for day 2 part 1 is: {}", ans_day2.0);
-    println!("The answer for day 2 part 2 is: {}", ans_day2.1);
 
+    // December, 2
+    let ans_day2 = day02::answers_day2();
+    println!(
+        "The answer for day 2 part 1 is: {}\nThe answer for day 2 part 2 is: {}\n",
+        ans_day2.0, ans_day2.1
+    );
+/*
     // December, 3
     let ans_day3: (usize, usize) = day03::answers_day3();
     println!("The answer for day 3 part 1 is: {}", ans_day3.0);

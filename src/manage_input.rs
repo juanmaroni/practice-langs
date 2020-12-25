@@ -31,7 +31,7 @@ pub fn parse_expense_report(filename: &str, year: u16) -> Vec<u16> {
     expense_report
 }
 
-pub fn passwords_from_file(filename: &str) -> Vec<String>{
+pub fn parse_lines(filename: &str) -> Vec<String>{
     let mut passwords: Vec<String> = Vec::new();
 
     if let Ok(lines) = read_lines(filename) {
