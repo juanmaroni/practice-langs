@@ -11,26 +11,24 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>> wher
     Ok(io::BufReader::new(file).lines())
 }
 
-pub fn numbers_from_file(filename: &str, year: i16) -> Vec<i16> {
-    let mut numbers: Vec<i16> = Vec::new();
+pub fn parse_expense_report(filename: &str, year: u16) -> Vec<u16> {
+    let mut expense_report: Vec<u16> = Vec::new();
 
-    // Assumptions:
-    // - The input has only positive integers (unsigned int), so numbers higher than 2020 are out.
-    // - u16 and i16 are enough fo the few years to come.
     if let Ok(lines) = read_lines(filename) {
         for line in lines {
             if let Ok(number) = line {
-                let n: i16 = number.parse::<i16>().unwrap();    // TODO: I could handle error on this
+                let n: u16 = number.parse::<u16>().unwrap_or(0);
 
                 // Numbers can't be greater than the year, so I will exclude them.
+                // Probably not necessary, if every input contains numbers less than or equal to the year
                 if n <= year {
-                    numbers.push(n);
+                    expense_report.push(n);
                 }
             }
         }
     }
 
-    numbers
+    expense_report
 }
 
 pub fn passwords_from_file(filename: &str) -> Vec<String>{

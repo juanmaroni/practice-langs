@@ -28,14 +28,14 @@ extern crate regex;
 extern crate peg;
 
 fn main() {
-    /*
+    
     // December, 1
-    let ans_day1_part1: i32 = day01::answer_day1_part1();
-    println!("The answer for day 1 part 1 is: {}", ans_day1_part1);
-
-    let ans_day1_part2: i32 = day01::answer_day1_part2();
-    println!("The answer for day 1 part 2 is: {}", ans_day1_part2);
-
+    let ans_day1 = day01::answers_day1();
+    println!(
+        "The answer for day 1 part 1 is: {}\nThe answer for day 1 part 2 is: {}\n",
+        ans_day1.0, ans_day1.1
+    );
+/*
     // December, 2
     let ans_day2: (u16, u16) = day02::answers_day2();
     println!("The answer for day 2 part 1 is: {}", ans_day2.0);
@@ -152,9 +152,10 @@ fn main() {
     let ans_day24 = day24::answers_day24();
     //println!("The answer for day 24 part 1 is: {}", ans_day24.0);
     //println!("The answer for day 24 part 2 is: {}", ans_day24.1);
-*/
+
     // December, 25
     let ans_day25 = day25::answers_day25();
     println!("The answer for day 25 part 1 is: {}", ans_day25);
     println!("The answer for day 25 part 2 is: MERRY CHRISTMAS!");
+*/   
 }
