@@ -488,3 +488,25 @@ pub fn get_cups(filename: &str) -> Vec<u8> {
 
     cups
 }
+
+pub fn get_hexa_tiles(filename: &str) -> Vec<Vec<String>> {
+    let mut hexa_tiles: Vec<Vec<String>> = Vec::new();
+    let re = Regex::new("(se)|(sw)|(ne)|(nw)|(w)|(e)+").unwrap();
+
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+            if let Ok(t) = line {
+                let mut tiles_dir: Vec<String> = Vec::new();
+
+                for c in re.captures_iter(&t) {
+                    tiles_dir.push(c[0].to_string());
+                }
+                
+                hexa_tiles.push(tiles_dir);
+            }
+        }
+    }
+
+    //println!("{:?}", hexa_tiles);
+    hexa_tiles
+}
