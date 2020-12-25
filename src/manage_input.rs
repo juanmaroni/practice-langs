@@ -45,8 +45,8 @@ pub fn parse_lines(filename: &str) -> Vec<String>{
     passwords
 }
 
-pub fn grid_from_file(filename: &str) -> (String, usize) {
-    let mut grid: String = "".to_owned();
+pub fn parse_grid(filename: &str) -> String {
+    let mut grid: String = String::new();
 
     if let Ok(lines) = read_lines(filename) {
         for line in lines {
@@ -56,9 +56,7 @@ pub fn grid_from_file(filename: &str) -> (String, usize) {
         }
     }
 
-    let len_pattern: usize = grid.find('\n').unwrap();
-
-    (grid, len_pattern)
+    grid
 }
 
 pub fn read_passports(filename: &str) -> Vec<HashMap<String, String>> {

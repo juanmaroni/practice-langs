@@ -41,12 +41,14 @@ fn main() {
         "The answer for day 2 part 1 is: {}\nThe answer for day 2 part 2 is: {}\n",
         ans_day2.0, ans_day2.1
     );
-/*
-    // December, 3
-    let ans_day3: (usize, usize) = day03::answers_day3();
-    println!("The answer for day 3 part 1 is: {}", ans_day3.0);
-    println!("The answer for day 3 part 2 is: {}", ans_day3.1);
 
+    // December, 3
+    let ans_day3 = day03::answers_day3();
+    println!(
+        "The answer for day 3 part 1 is: {}\nThe answer for day 3 part 2 is: {}\n",
+        ans_day3.0, ans_day3.1
+    );
+/*
     // December, 4
     let ans_day4: (usize, usize) = day04::answers_day4();
     println!("The answer for day 4 part 1 is: {}", ans_day4.0);
