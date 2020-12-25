@@ -510,3 +510,18 @@ pub fn get_hexa_tiles(filename: &str) -> Vec<Vec<String>> {
     //println!("{:?}", hexa_tiles);
     hexa_tiles
 }
+
+pub fn get_public_keys(filename: &str) -> (u32, u32) {
+    let mut keys: Vec<u32> = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
+        // Only two keys.
+        for line in lines.take(2) {
+            if let Ok(k) = line {
+                keys.push(k.parse::<u32>().unwrap());
+            }
+        }
+    }
+
+    (keys[0], keys[1])
+}
