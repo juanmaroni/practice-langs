@@ -59,10 +59,10 @@ pub fn parse_grid(filename: &str) -> String {
     grid
 }
 
-pub fn read_passports(filename: &str) -> Vec<HashMap<String, String>> {
-    let mut passport_fields: HashMap<String, String> = HashMap::new();
+pub fn parse_passports(filename: &str) -> Vec<HashMap<String, String>> {
     let mut passports: Vec<HashMap<String, String>> = Vec::new();
-
+    let mut passport_fields: HashMap<String, String> = HashMap::new();
+    
     if let Ok(lines) = read_lines(filename) {
         for line in lines {
             if let Ok(fields) = line {

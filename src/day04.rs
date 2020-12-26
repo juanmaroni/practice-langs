@@ -1,7 +1,7 @@
 // Advent of Code 2020: December, 4
 // Day 4: Passport Processing
 
-use crate::manage_input;
+use crate::manage_input::parse_passports;
 
 use std::collections::HashMap;
 
@@ -12,9 +12,9 @@ pub fn answers_day4() -> (usize, usize) {
 fn validate_passport() -> (usize, usize) {
     const N_REQ_FIELDS: usize = 7;
     let required_fields: [&str; N_REQ_FIELDS] = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-    // Cheating a bit on the file, stuck when reaching EOF.
-    let passports: Vec<HashMap<String, String>> = manage_input::read_passports("inputs/day04_input.txt");
-    let mut valid_passports: Vec<HashMap<String, String>> = passports.clone();
+    // Input file needs an extra empty line at EOF.
+    let passports = parse_passports("inputs/day04_input.txt");
+    let mut valid_passports = passports.clone();
     let mut invalid_passports: Vec<HashMap<String, String>> = Vec::new();
     let mut n_valid: usize = passports.len();
 
@@ -101,10 +101,7 @@ fn validate_passport() -> (usize, usize) {
                 }
             }
             else if k == "hcl" {
-                // This could be done easier with RegEx.
                 let mut hcl: Vec<char> = v.chars().collect();
-                let hexadec_chars: [char; 16] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                                                'a', 'b', 'c', 'd', 'e', 'f'];
 
                 if hcl[0] != '#' || hcl.len() != 7 {
                     n_valid_strict -= 1;
@@ -114,7 +111,7 @@ fn validate_passport() -> (usize, usize) {
                     hcl.remove(0);
 
                     for c in hcl {
-                        if !hexadec_chars.contains(&c) {
+                        if !c.is_ascii_hexdigit() {
                             n_valid_strict -= 1;
                             break;
                         }
