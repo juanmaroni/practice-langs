@@ -1,7 +1,7 @@
 // Advent of Code 2020: December, 5
 // Day 5: Binary Boarding
 
-use crate::manage_input;
+use crate::manage_input::parse_lines;
 
 pub fn answers_day5() -> (u32, u32) {
     info_seat_id()
@@ -44,8 +44,7 @@ fn get_seat_id(row: u8, col: u8) -> u32 {
 }
 
 fn info_seat_id() -> (u32, u32) {
-    // Reusing a method with a bad name for this exercise
-    let passes: Vec<String> = manage_input::passwords_from_file("inputs/day05_input.txt");
+    let passes = parse_lines("inputs/day05_input.txt");
     let mut seat_ids: Vec<u32> = Vec::new();
     let mut max_id = 0;
 
@@ -59,7 +58,6 @@ fn info_seat_id() -> (u32, u32) {
         }
 
         seat_ids.push(seat_id);
-        
     }
 
     // Part 2
