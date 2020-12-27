@@ -173,7 +173,7 @@ pub fn parse_instructions(filename: &str) -> Vec<(String, i16)> {
     instructions
 }
 
-pub fn get_numbers(filename: &str) -> Vec<u64> {
+pub fn parse_numbers_u64(filename: &str) -> Vec<u64> {
     let mut numbers: Vec<u64> = Vec::new();
 
     if let Ok(lines) = read_lines(filename) {
