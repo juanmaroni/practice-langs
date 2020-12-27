@@ -158,7 +158,7 @@ pub fn parse_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
     bags_collection
 }
 
-pub fn read_instructions(filename: &str) -> Vec<(String, i16)> {
+pub fn parse_instructions(filename: &str) -> Vec<(String, i16)> {
     let mut instructions: Vec<(String, i16)> = Vec::new();
 
     if let Ok(lines) = read_lines(filename) {

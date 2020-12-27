@@ -1,25 +1,21 @@
 // Advent of Code 2020: December, 8
 // Day 8: Handheld Halting
 
-use crate::manage_input;
+use crate::manage_input::parse_instructions;
 
 pub fn answers_day8() -> (isize, isize) {
-    let filepath: &str = "inputs/day08_input.txt";
+    let filepath = "inputs/day08_input.txt";
+    let instructions = parse_instructions(filepath);
 
-    (execute_instructions(filepath), fix_loop(filepath))
+    (execute_instructions(&instructions), fix_loop(&instructions))
 }
 
-fn execute_instructions(filepath: &str) -> isize {
-    let instructions = manage_input::read_instructions(filepath);
+fn execute_instructions(instructions: &Vec<(String, i16)>) -> isize {
     let mut executed: Vec<usize> = Vec::new();
     let mut acc: isize = 0;
     let mut i: usize = 0;
 
-    loop {
-        if i > instructions.len() || executed.contains(&i) {
-            break;
-        }
-
+    while i <= instructions.len() && !executed.contains(&i) {
         executed.push(i);
 
         if instructions[i].0 == "acc" {
@@ -27,14 +23,7 @@ fn execute_instructions(filepath: &str) -> isize {
             i += 1;
         }
         else if instructions[i].0 == "jmp" {
-            if instructions[i].1 < 0 {
-                // This was very tricky, because it went negative and caused overflow.
-                // I had to multicast to operate with negatives.
-                i = (i as isize + instructions[i].1 as isize) as usize;
-            }
-            else {
-                i += instructions[i].1 as usize;
-            }
+            i = jmp(i, instructions[i].1);
         }
         else {
             i += 1;
@@ -44,23 +33,15 @@ fn execute_instructions(filepath: &str) -> isize {
     acc
 }
 
-fn fix_loop(filepath: &str) -> isize {
-    let instructions = manage_input::read_instructions(filepath);
-    
-    for j in 0..instructions.len() {
+fn fix_loop(instructions: &Vec<(String, i16)>) -> isize {
+    let instructions_len = instructions.len();
+
+    for j in 0..instructions_len {
         let mut executed: Vec<usize> = Vec::new();
         let mut acc: isize = 0;
         let mut i: usize = 0;
         
-        loop {
-            if i == instructions.len() {
-                return acc;
-            }
-            
-            if i >= instructions.len() || executed.contains(&i) {
-                break;
-            }
-    
+        while i < instructions.len() && !executed.contains(&i) {
             executed.push(i);
 
             if j == i {
@@ -69,12 +50,7 @@ fn fix_loop(filepath: &str) -> isize {
                     break;
                 }
                 else if instructions[i].0 == "nop" {
-                    if instructions[i].1 < 0 {
-                        i = (i as isize + instructions[i].1 as isize) as usize;
-                    }
-                    else {
-                        i += instructions[i].1 as usize;
-                    }
+                    i = jmp(i, instructions[i].1);
                 }
                 else {
                     i += 1;
@@ -86,20 +62,29 @@ fn fix_loop(filepath: &str) -> isize {
                     i += 1;
                 }
                 else if instructions[i].0 == "jmp" {
-                    if instructions[i].1 < 0 {
-                        i = (i as isize + instructions[i].1 as isize) as usize;
-                    }
-                    else {
-                        i += instructions[i].1 as usize;
-                    }
+                    i = jmp(i, instructions[i].1);
                 }
                 else {
                     i += 1;
                 }
             }
         }
+
+        if i == instructions_len {
+            return acc;
+        }
     }
     
-    
-    0
+    0   // Impossible to fix the loop.
+}
+
+fn jmp(mut i: usize, instruction: i16) -> usize {
+    if instruction < 0 {
+        i = (i as isize + instruction as isize) as usize;
+    }
+    else {
+        i += instruction as usize;
+    }
+
+    i
 }
