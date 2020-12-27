@@ -135,7 +135,7 @@ pub fn parse_form_answers(filename: &str) -> (Vec<(u16, Vec<char>)>, u16) {
 }
 
 // First time using Regex crate
-pub fn get_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
+pub fn parse_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
     let re_parent = Regex::new(r"^(?P<parent_bag>[\w]+ [\w]+)").unwrap();
     let re_children = Regex::new(r"(?P<capacity>[0-9]+) (?P<child_bag>[\w]+ [\w]+)").unwrap();
     let mut bags_collection: HashMap<String, HashMap<String, u8>> = HashMap::new();
@@ -155,7 +155,6 @@ pub fn get_bags(filename: &str) -> HashMap<String, HashMap<String, u8>> {
         }
     }
 
-    //println!("{:?}", bags_collection);
     bags_collection
 }
 

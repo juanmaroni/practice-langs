@@ -69,12 +69,14 @@ fn main() {
         "The answer for day 6 part 1 is: {}\nThe answer for day 6 part 2 is: {}\n",
         ans_day6.0, ans_day6.1
     );
-/*
-    // December, 7
-    //let ans_day7 = day07::answers_day7();
-    //println!("The answer for day 7 part 1 is: {}", ans_day7.0);
-    //println!("The answer for day 7 part 2 is: {}", ans_day7.1);
 
+    // December, 7
+    let ans_day7 = day07::answers_day7();
+    println!(
+        "The answer for day 7 part 1 is: {}\nThe answer for day 7 part 2 is: {}\n",
+        ans_day7.0, ans_day7.1
+    );
+/*
     // December, 8
     let ans_day8 = day08::answers_day8();
     println!("The answer for day 8 part 1 is: {}", ans_day8.0);

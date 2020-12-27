@@ -1,37 +1,38 @@
 // Advent of Code 2020: December, 7
 // Day 7: Handy Haversacks
 
-use crate::manage_input;
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
-pub fn answers_day7() -> (u16, u16) {
-    let filepath: &str = "inputs/day07_input.txt";
-    count_shiny_gold(filepath);
+use crate::manage_input::parse_bags;
 
-    (0, 0)
+type MapBagsCollection = HashMap<String, HashMap<String, u8>>;
+
+pub fn answers_day7() -> (u16, u32) {
+    let bags_collection: MapBagsCollection = parse_bags("inputs/day07_input.txt");
+
+    (count_shiny_gold(&bags_collection),
+    count_total_bags(&bags_collection, "shiny gold") - 1) // Discounting the shiny gold bag.
 }
 
-// Bad at graphs, send help.
-fn count_shiny_gold(filepath: &str) -> usize {
-    let bags_collection: HashMap<String, HashMap<String, u8>> = manage_input::get_bags(filepath);
-    let mut count: usize = 0;
-
-    let mut visited: HashSet<String> = HashSet::new();
-    visited.insert("shiny gold".to_string());
-    
-    println!("{:?}\n", bags_collection);
-    
-    for container in bags_collection.keys() {
-        for bag in bags_collection.get(container).unwrap().keys() {
-            if visited.contains(bag) {
-                println!("Container {:?}, contains {:?}", container, bag);
-                visited.insert(container.to_string());
-            }
-        }
+fn count_shiny_gold(bags_collection: &MapBagsCollection) -> u16 {
+    let mut visited: HashSet<&str> = HashSet::new();
         
+    for bag in bags_collection.keys() {
+        if bags_collection[bag].iter().any(|(b, _)| contains_shiny_gold(&bags_collection, b)) {
+            visited.insert(bag);
+        }
     }
 
-    println!("\n{:?}\n", visited.len());
-    0
+    visited.len() as u16
+}
+
+fn contains_shiny_gold(bags_collection: &MapBagsCollection, bag: &str) -> bool {
+    bag == "shiny gold" || bags_collection[bag].iter()
+                           .any(|(b, _)| contains_shiny_gold(bags_collection, b))
+}
+
+fn count_total_bags(bags_collection: &MapBagsCollection, bag: &str) -> u32 {
+    1 + bags_collection[bag].iter()
+        .map(|(b, n)| *n as u32 * count_total_bags(bags_collection, b))
+        .sum::<u32>()
 }
