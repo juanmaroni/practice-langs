@@ -43,3 +43,24 @@ fn count_depth_measurement_increases_grouped_by_3(values: Vec<u32>) -> u32 {
 
     count
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const FILE: &str = "inputs/day01_input_test.txt";
+
+    #[test]
+    fn day01_part1_test() {
+        let sonar_values = input_handler::read_file_lines_as_nums(FILE);
+
+        assert_eq!(count_depth_measurement_increases(sonar_values), 7);
+    }
+
+    #[test]
+    fn day01_part2_test() {
+        let sonar_values = input_handler::read_file_lines_as_nums(FILE);
+
+        assert_eq!(count_depth_measurement_increases_grouped_by_3(sonar_values), 5);
+    }
+}
