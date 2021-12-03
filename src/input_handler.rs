@@ -32,3 +32,27 @@ pub fn parse_commands(filename: &str) -> Vec<(String, u32)> {
 
     commands
 }
+
+pub fn parse_diagnostic_report(filename: &str) -> Vec<Vec<char>> {
+    let mut bits: Vec<Vec<char>> = Vec::new();
+
+    // Build matrix of bits
+    for line in build_reader(filename).lines() {
+        bits.push(line.unwrap().chars().collect());
+    }
+
+    bits
+}
+
+pub fn transpose_matrix_chars(matrix: Vec<Vec<char>>) -> Vec<Vec<char>> {
+    let row_len = matrix[0].len();
+    let mut transpose_matrix: Vec<Vec<char>> = vec![Vec::with_capacity(matrix.len()); row_len];
+
+    for r in matrix {
+        for i in 0..row_len {
+            transpose_matrix[i].push(r[i]);
+        }
+    }
+
+    transpose_matrix
+}
