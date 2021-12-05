@@ -57,7 +57,7 @@ pub fn transpose_matrix_chars(matrix: Vec<Vec<char>>) -> Vec<Vec<char>> {
     transpose_matrix
 }
 
-pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) { //
+pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) {
     let mut draw_numbers: Vec<u8> = Vec::new();
     let mut all_possible_lines: Vec<Vec<u8>> = Vec::new();
 
@@ -95,7 +95,7 @@ pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) { //
     (draw_numbers, all_possible_lines)
 }
 
-pub fn transpose_matrix_nums_u8(matrix: Vec<Vec<u8>>) -> Vec<Vec<u8>> {
+pub fn transpose_matrix_nums_u8(matrix: Vec<Vec<u8>>) -> Vec<Vec<u8>>{
     let row_len = matrix[0].len();
     let mut transpose_matrix: Vec<Vec<u8>> = vec![Vec::with_capacity(matrix.len()); row_len];
 
@@ -106,4 +106,22 @@ pub fn transpose_matrix_nums_u8(matrix: Vec<Vec<u8>>) -> Vec<Vec<u8>> {
     }
 
     transpose_matrix
+}
+
+pub fn parse_vents(filename: &str) -> (Vec<(Vec<u16>, Vec<u16>)>, u16) {
+    let mut vents: Vec<(Vec<u16>, Vec<u16>)> = Vec::new();
+    let mut get_grid_size: Vec<u16> = Vec::new();
+    
+    for line in build_reader(filename).lines() {
+        let l = line.unwrap();
+        let mut split = l.split(" -> ");
+        let left: Vec<u16> = split.next().unwrap().split(',').map(|n| n.parse::<u16>().unwrap()).collect();
+        let right: Vec<u16> = split.next().unwrap().split(',').map(|n| n.parse::<u16>().unwrap()).collect();
+        get_grid_size.push(left.clone().into_iter().max().unwrap());
+        get_grid_size.push(right.clone().into_iter().max().unwrap());
+        let extract_nums: (Vec<u16>, Vec<u16>) = (left, right);
+        vents.push(extract_nums);
+    }
+
+    (vents, *get_grid_size.iter().max().unwrap() + 1)
 }
