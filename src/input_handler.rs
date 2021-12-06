@@ -2,6 +2,7 @@
 
 use std::fs;
 use std::fs::File;
+use std::intrinsics::transmute;
 use std::io::{BufRead, BufReader};
 
 fn build_reader(filename: &str) -> BufReader<File> {
@@ -75,7 +76,7 @@ pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) {
         let line = line.unwrap();
         
         if line.len() == 0 {
-            let transposed_table: Vec<Vec<u8>> = transpose_matrix_nums_u8(board_table.clone());
+            let transposed_table: Vec<Vec<u8>> = transpose_matrix_nums_u8(&board_table);
 
             for b_line in board_table {
                 all_possible_lines.push(b_line);
@@ -96,7 +97,37 @@ pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) {
     (draw_numbers, all_possible_lines)
 }
 
-pub fn transpose_matrix_nums_u8(matrix: Vec<Vec<u8>>) -> Vec<Vec<u8>>{
+pub fn parse_bingo_boards(filename: &str) -> (Vec<u8>, Vec<Vec<Vec<u8>>>) {
+    let mut reader = build_reader(filename);
+
+    // Draw numbers
+    let mut first_line = String::new();
+    reader.read_line(&mut first_line).expect("Could not read line");
+    let draw_numbers = first_line.trim().split(',').map(|n| n.parse::<u8>().unwrap()).collect();
+
+    // Boards
+    let mut boards: Vec<Vec<Vec<u8>>> = Vec::new();
+    let mut board_lines: Vec<Vec<u8>> = Vec::new();
+
+    for line in reader.lines().skip(1) {
+        let line = line.unwrap();
+
+        if line.len() == 0 {
+            let board_transposed = transpose_matrix_nums_u8(&board_lines);
+            boards.push(board_lines);
+            boards.push(board_transposed);
+            board_lines = Vec::new();
+        }
+        else {
+            let board_line: Vec<u8> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+            board_lines.push(board_line);
+        }
+    }
+
+    (draw_numbers, boards)
+}
+
+pub fn transpose_matrix_nums_u8(matrix: &Vec<Vec<u8>>) -> Vec<Vec<u8>>{
     let row_len = matrix[0].len();
     let mut transpose_matrix: Vec<Vec<u8>> = vec![Vec::with_capacity(matrix.len()); row_len];
 
