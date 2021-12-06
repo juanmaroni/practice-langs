@@ -1,5 +1,6 @@
 // Functions to parse problem inputs
 
+use std::fs;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -124,4 +125,15 @@ pub fn parse_vents(filename: &str) -> (Vec<(Vec<u16>, Vec<u16>)>, u16) {
     }
 
     (vents, *get_grid_size.iter().max().unwrap() + 1)
+}
+
+pub fn parse_line_nums(filename: &str) -> [usize; 9] {
+    let f = fs::read_to_string(filename).expect("Error reading file");
+    let mut fishes: [usize; 9] = [0; 9];
+
+    for timer in f.trim().split(',').map(|n| n.parse::<usize>().unwrap()) {
+        fishes[timer] += 1;
+    }
+
+    fishes
 }
