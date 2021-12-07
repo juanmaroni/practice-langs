@@ -168,3 +168,10 @@ pub fn parse_line_nums(filename: &str) -> [usize; 9] {
 
     fishes
 }
+
+pub fn parse_positions(filename: &str) -> Vec<u16> {
+    let f = fs::read_to_string(filename).expect("Error reading file");
+    let positions: Vec<u16> = f.trim().split(',').map(|n| n.parse::<u16>().unwrap()).collect();
+
+    positions
+}
