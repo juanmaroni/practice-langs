@@ -175,3 +175,17 @@ pub fn parse_positions(filename: &str) -> Vec<u16> {
 
     positions
 }
+
+pub fn parse_patterns_outputs(filename: &str) -> Vec<([String; 10], [String; 4])>{
+    let mut patterns_outputs: Vec<([String; 10], [String; 4])> = Vec::new();
+
+    for line in build_reader(filename).lines() {
+        let l = line.unwrap();
+        let input_sides: Vec<String> = l.split(" | ").map(|side| side.to_string()).collect();
+        let patterns: [String; 10] = input_sides[0].split(" ").map(|segment| segment.to_string()).collect::<Vec<String>>().try_into().unwrap();
+        let outputs: [String; 4] = input_sides[1].split(" ").map(|segment| segment.to_string()).collect::<Vec<String>>().try_into().unwrap();
+        patterns_outputs.push((patterns, outputs));
+    }
+
+    patterns_outputs
+}
