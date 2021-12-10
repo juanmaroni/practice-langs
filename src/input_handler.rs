@@ -199,3 +199,13 @@ pub fn parse_heightmap(filename: &str) -> Vec<Vec<i8>> {
 
     height_matrix
 }
+
+pub fn parse_navigation_subsystem(filename: &str) -> Vec<String> {
+    let mut navigation_subsystem: Vec<String> = Vec::new();
+
+    for line in build_reader(filename).lines() {
+        navigation_subsystem.push(line.unwrap());
+    }
+
+    navigation_subsystem
+}
