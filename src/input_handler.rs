@@ -58,45 +58,7 @@ pub fn transpose_matrix_chars(matrix: Vec<Vec<char>>) -> Vec<Vec<char>> {
     transpose_matrix
 }
 
-pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<u8>>) {
-    let mut draw_numbers: Vec<u8> = Vec::new();
-    let mut all_possible_lines: Vec<Vec<u8>> = Vec::new();
-
-    // First line: draw numbers
-    for line in build_reader(filename).lines() {
-        draw_numbers = line.unwrap().split(",").map(|s| s.parse().unwrap()).collect();
-        break;
-    }
-
-    // All other lines
-    let mut board_table: Vec<Vec<u8>> = Vec::new();
-
-    for line in build_reader(filename).lines().skip(2) {
-        let line = line.unwrap();
-        
-        if line.len() == 0 {
-            let transposed_table: Vec<Vec<u8>> = transpose_matrix_nums_u8(&board_table);
-
-            for b_line in board_table {
-                all_possible_lines.push(b_line);
-            }
-
-            for b_line in transposed_table {
-                all_possible_lines.push(b_line);
-            }
-
-            board_table = Vec::new();
-        }
-        else {
-            let board_line: Vec<u8> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
-            board_table.push(board_line);
-        }
-    }
-
-    (draw_numbers, all_possible_lines)
-}
-
-pub fn parse_bingo_boards(filename: &str) -> (Vec<u8>, Vec<Vec<Vec<u8>>>) {
+pub fn parse_bingo(filename: &str) -> (Vec<u8>, Vec<Vec<Vec<u8>>>) {
     let mut reader = build_reader(filename);
 
     // Draw numbers
