@@ -1,6 +1,6 @@
 mod input_handler;
 mod days;
-use days::{day01, day02, day03, day04, day05, day06, day07, day08, day09, day10};
+use days::{day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11};
 
 fn main() {
     day01::day01_answer();
@@ -13,4 +13,5 @@ fn main() {
     day08::day08_answer();
     day09::day09_answer();
     day10::day10_answer();
+    day11::day11_answer();
 }

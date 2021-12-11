@@ -171,3 +171,14 @@ pub fn parse_navigation_subsystem(filename: &str) -> Vec<String> {
 
     navigation_subsystem
 }
+
+pub fn parse_octopus_energy_levels(filename: &str) -> Vec<Vec<i8>> {
+    let mut lines = Vec::new();
+
+    for line in build_reader(filename).lines() {
+        let line = line.unwrap().chars().map(|n| n.to_digit(10).expect("Not a number") as i8).collect::<Vec<i8>>();
+        lines.push(line);
+    }
+
+    lines
+}
