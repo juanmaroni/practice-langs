@@ -32,7 +32,6 @@ fn increase_energy_around(grid: &mut Vec<Vec<i8>>, row: usize, col: usize, n_row
                 increase_energy_around(grid, prev_row  as usize, prev_col as usize, n_rows, n_cols);
             }
         }
-        
 
         // Top-Center
         if grid[prev_row as usize][col] >= 0 {
