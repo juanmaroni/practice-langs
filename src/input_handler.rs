@@ -1,8 +1,9 @@
 // Functions to parse problem inputs
 
-use std::fs;
+use std::{fs, path};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::collections::HashMap;
 
 fn build_reader(filename: &str) -> BufReader<File> {
     let file = File::open(filename).expect("Something went wrong opening the file");
@@ -181,4 +182,17 @@ pub fn parse_octopus_energy_levels(filename: &str) -> Vec<Vec<i8>> {
     }
 
     lines
+}
+
+pub fn parse_cave_paths(filename: &str) -> HashMap<String, Vec<String>> {
+    let mut paths: HashMap<String, Vec<String>> = HashMap::new();
+
+    for line in build_reader(filename).lines() {
+        let line = line.unwrap();
+        let l: Vec<&str> = line.split("-").collect();
+
+        paths.entry(String::from(l[0])).or_default().push(String::from(l[1]));
+    }
+
+    paths
 }
