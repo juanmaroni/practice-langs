@@ -196,3 +196,44 @@ pub fn parse_cave_paths(filename: &str) -> HashMap<String, Vec<String>> {
 
     paths
 }
+
+pub fn parse_manual_instructions(filename: &str) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
+    let mut points = Vec::new();
+    let mut folds = Vec::new();
+    let reader = build_reader(filename);
+    let mut half_instructions = false;
+
+    for line in reader.lines() {
+        let line = line.unwrap();
+
+        if line.len() == 0 {
+            half_instructions = true;
+            continue;
+        }
+
+        // Read coordinates
+        if !half_instructions {
+            let mut point = line.split(',');
+            points.push((point.next().unwrap().parse::<usize>().unwrap(), point.next().unwrap().parse::<usize>().unwrap()));
+        }
+        // Read folds
+        else {
+            let mut line = line.replace("fold along ", "");
+            let axis = line.chars().nth(0).unwrap();
+
+            if axis == 'x' {
+                line = line.replace("x=", "");
+                folds.push((line.parse::<usize>().unwrap(), 0));
+            }
+            else if axis == 'y' {
+                line = line.replace("y=", "");
+                folds.push((0, line.parse::<usize>().unwrap()));
+            }
+            else {
+                panic!("Hahaha... NO.");
+            }
+        }
+    }
+
+    (points, folds)
+}
