@@ -237,3 +237,23 @@ pub fn parse_manual_instructions(filename: &str) -> (Vec<(usize, usize)>, Vec<(u
 
     (points, folds)
 }
+
+pub fn parse_polymer_instructions(filename: &str) -> (String, HashMap<String, char>) {
+    let mut reader = build_reader(filename);
+
+    // Template
+    let mut first_line = String::new();
+    reader.read_line(&mut first_line).expect("Could not read line");
+    let template = String::from(first_line.trim());
+
+    // Pair insertion
+    let mut pairs: HashMap<String, char> = HashMap::new();
+
+    for line in reader.lines().skip(1) {
+        let line = line.unwrap();
+        let split = line.split(" -> ").collect::<Vec<&str>>();
+        pairs.insert(String::from(split[0]), split[1].chars().collect::<Vec<char>>()[0]);
+    }
+
+    (template, pairs)
+}
