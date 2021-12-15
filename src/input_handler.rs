@@ -257,3 +257,14 @@ pub fn parse_polymer_instructions(filename: &str) -> (String, HashMap<String, ch
 
     (template, pairs)
 }
+
+pub fn parse_cave_risk_level(filename: &str) -> Vec<Vec<i64>> {
+    let mut lines = Vec::new();
+
+    for line in build_reader(filename).lines() {
+        let line = line.unwrap().chars().map(|n| n.to_digit(10).expect("Not a number") as i64).collect::<Vec<i64>>();
+        lines.push(line);
+    }
+
+    lines
+}
