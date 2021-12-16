@@ -268,3 +268,7 @@ pub fn parse_cave_risk_level(filename: &str) -> Vec<Vec<i64>> {
 
     lines
 }
+
+pub fn parse_hexadecimal_transmission(filename: &str) -> String {
+    fs::read_to_string(filename).expect("Error reading file").trim().to_string()
+}
