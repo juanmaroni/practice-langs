@@ -272,3 +272,20 @@ pub fn parse_cave_risk_level(filename: &str) -> Vec<Vec<i64>> {
 pub fn parse_hexadecimal_transmission(filename: &str) -> String {
     fs::read_to_string(filename).expect("Error reading file").trim().to_string()
 }
+
+pub fn parse_target_area(filename: &str) -> ((i32, i32), (i32, i32)) {
+    let line = fs::read_to_string(filename)
+        .expect("Error reading file")
+        .trim()
+        .to_string()
+        .chars()
+        .skip_while(|c| !c.is_digit(10))
+        .collect::<String>();
+    let line = line.split(", y=").collect::<Vec<&str>>();
+    // (x1, x2)
+    let xs = line[0].split("..").map(|n| n.parse::<i32>().unwrap()).collect::<Vec<i32>>();
+    // (y1, y2)
+    let ys= line[1].split("..").map(|n| n.parse::<i32>().unwrap()).collect::<Vec<i32>>();
+
+    ((xs[0], xs[1]), (ys[0], ys[1]))
+}
