@@ -289,3 +289,7 @@ pub fn parse_target_area(filename: &str) -> ((i32, i32), (i32, i32)) {
 
     ((xs[0], xs[1]), (ys[0], ys[1]))
 }
+
+pub fn parse_snailfish_homework(filename: &str) -> Vec<String> {
+    build_reader(filename).lines().map(|line| line.unwrap()).collect()
+}
