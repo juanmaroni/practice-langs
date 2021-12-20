@@ -293,3 +293,22 @@ pub fn parse_target_area(filename: &str) -> ((i32, i32), (i32, i32)) {
 pub fn parse_snailfish_homework(filename: &str) -> Vec<String> {
     build_reader(filename).lines().map(|line| line.unwrap()).collect()
 }
+
+pub fn parse_algorithm_and_image(filename: &str) -> (Vec<char>, Vec<Vec<char>>) {
+    // Optimization: true and false
+    let mut reader = build_reader(filename);
+
+    let mut first_line = String::new();
+    reader.read_line(&mut first_line).expect("Could not read line");
+    let algorithm = first_line.trim().chars().collect::<Vec<_>>();
+
+    let mut image: Vec<Vec<char>> = Vec::new();
+
+    for line in reader.lines().skip(1) {
+        let line_str = line.unwrap();
+        
+        image.push(line_str.trim().chars().collect::<Vec<char>>());
+    }
+
+    (algorithm, image)
+}
