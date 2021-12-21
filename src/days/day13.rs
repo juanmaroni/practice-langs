@@ -11,7 +11,8 @@ pub fn day13_answer() {
     
     println!("Day 13, part 1: {}", fold_page_once(&mut grid, folds[0]));
     println!("Day 13, part 2: \n");
-    fold_page(&mut grid, folds)
+    fold_page(&mut grid, folds);
+    println!();
 }
 
 fn build_grid(points: &Vec<(usize, usize)>) -> Vec<Vec<bool>> {
