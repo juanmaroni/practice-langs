@@ -312,3 +312,10 @@ pub fn parse_algorithm_and_image(filename: &str) -> (Vec<char>, Vec<Vec<char>>) 
 
     (algorithm, image)
 }
+
+pub fn parse_starting_positions(filename: &str) -> Vec<u16> {
+    // Length of the useless part from the input to skip it
+    let len_str = String::from("Player 1 starting position: ").len();
+    
+    build_reader(filename).lines().map(|line| line.unwrap()[len_str..].to_string().parse::<u16>().unwrap()).collect::<Vec<u16>>()
+}
