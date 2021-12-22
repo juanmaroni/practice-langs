@@ -319,3 +319,17 @@ pub fn parse_starting_positions(filename: &str) -> Vec<u16> {
     
     build_reader(filename).lines().map(|line| line.unwrap()[len_str..].to_string().parse::<u16>().unwrap()).collect::<Vec<u16>>()
 }
+
+pub fn parse_cuboids(filename: &str) -> Vec<(bool, Vec<Vec<i32>>)> {
+    let mut status_points = Vec::new();
+
+    for line in build_reader(filename).lines() {
+        let l = line.unwrap();
+        let l = l.split_whitespace().collect::<Vec<&str>>();
+        let status = if l[0] == "on" { true } else { false };
+        let points = l[1].split(",").map(|p| p[2..].split("..").map(|n| n.to_string().parse::<i32>().unwrap()).collect::<Vec<_>>()).collect::<Vec<_>>();
+        status_points.push((status, points));
+    }
+
+    status_points
+}
