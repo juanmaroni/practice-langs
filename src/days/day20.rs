@@ -8,9 +8,9 @@ const FILE: &str = "inputs/day20_input.txt";
 pub fn day20_answer() {
     let (algorithm, image) = parse_algorithm_and_image(FILE);
     
-    println!("Day 20, part 1: {}", iterate_twice(&algorithm, &image));
+    println!("Day 20, part 1: {}", iterate_twice(&algorithm, &image, 2));
 
-    println!("Day 20, part 2: {}\n", 0);
+    println!("Day 20, part 2: {}\n", iterate_twice(&algorithm, &image, 50));
 }
 
 fn add_padding(image: &mut Vec<Vec<char>>, size: usize, c: char) {
@@ -29,24 +29,41 @@ fn add_padding(image: &mut Vec<Vec<char>>, size: usize, c: char) {
     }
 }
 
-fn enhance(matrix: &Vec<char>, algorithm: &Vec<char>) -> char {
-    let bits = matrix.iter().map(|c| if c == &'.' {'0'} else {'1'}).collect::<String>();
+fn enhance(image: &Vec<Vec<char>>, r: usize, c: usize, algorithm: &Vec<char>, it: usize) -> char {
+    let matrix = vec!(image[r-1][c-1], image[r-1][c], image[r-1][c+1], image[r][c-1], image[r][c], image[r][c+1], image[r+1][c-1], image[r+1][c], image[r+1][c+1]);
+    let mut bits = String::new();
+
+    for e in matrix {
+        if e == '#' {
+            bits.push('1');
+        }
+        else if e  == '.' {
+                bits.push('0');
+        }
+        else {
+            if it % 2 == 0 {
+                bits.push('0');
+            }
+            else {
+                bits.push('1');
+            }
+        }
+    }
 
     algorithm[usize::from_str_radix(&bits, 2).unwrap()]
 }
 
-fn iterate_twice(algorithm: &Vec<char>, image: &Vec<Vec<char>>) -> u16 {
+fn iterate_twice(algorithm: &Vec<char>, image: &Vec<Vec<char>>, iterations: usize) -> u16 {
     let mut image = image.clone();
     
-    for _ in 0..2 {
-        add_padding(&mut image, 2, '.');
+    for it in 0..iterations {
+        add_padding(&mut image, 2, '-');
         
         let mut new_image = image.clone();
 
         for i in 1..image.len() -1 {
             for j in 1..image[0].len() - 1 {
-                let matrix = vec!(image[i-1][j-1], image[i-1][j], image[i-1][j+1], image[i][j-1], image[i][j], image[i][j+1], image[i+1][j-1], image[i+1][j], image[i+1][j+1]);
-                new_image[i][j] = enhance(&matrix, algorithm);
+                new_image[i][j] = enhance(&image, i, j, algorithm, it);
             }
         }
 
@@ -65,13 +82,14 @@ mod tests {
     #[test]
     fn day20_part1_test() {
         let (algorithm, image) = parse_algorithm_and_image(FILE);
-        
-        assert_eq!(iterate_twice(&algorithm, &image), 35);
+
+        assert_eq!(iterate_twice(&algorithm, &image, 2), 5326);
     }
 
     #[test]
     fn day20_part2_test() {
-        
-        //assert_eq!(, 112);
+        let (algorithm, image) = parse_algorithm_and_image(FILE);
+
+        assert_eq!(iterate_twice(&algorithm, &image, 50), 17096);
     }
 }
