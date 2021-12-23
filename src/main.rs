@@ -23,4 +23,5 @@ fn main() {
     days::day19::day19_answer();
     days::day20::day20_answer();
     days::day22::day22_answer();
+    days::day23::day23_answer();
 }
