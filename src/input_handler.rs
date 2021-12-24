@@ -333,3 +333,7 @@ pub fn parse_cuboids(filename: &str) -> Vec<(bool, Vec<Vec<i32>>)> {
 
     status_points
 }
+
+pub fn parse_program(filename: &str) -> Vec<Vec<String>> {
+    build_reader(filename).lines().map(|line| line.unwrap().split_whitespace().map(|s| String::from(s)).collect()).collect()
+}
