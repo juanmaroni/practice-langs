@@ -1,6 +1,6 @@
 // Functions to parse problem inputs
 
-use std::{fs, path};
+use std::fs;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::collections::HashMap;
@@ -336,4 +336,8 @@ pub fn parse_cuboids(filename: &str) -> Vec<(bool, Vec<Vec<i32>>)> {
 
 pub fn parse_program(filename: &str) -> Vec<Vec<String>> {
     build_reader(filename).lines().map(|line| line.unwrap().split_whitespace().map(|s| String::from(s)).collect()).collect()
+}
+
+pub fn parse_sea_cucumbers(filename: &str) -> Vec<Vec<char>> {
+    build_reader(filename).lines().map(|line| line.unwrap().chars().collect()).collect()
 }

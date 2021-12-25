@@ -2,7 +2,7 @@ mod input_handler;
 mod days;
 
 fn main() {
-    /*days::day01::day01_answer();
+    days::day01::day01_answer();
     days::day02::day02_answer();
     days::day03::day03_answer();
     days::day04::day04_answer();
@@ -23,6 +23,7 @@ fn main() {
     days::day19::day19_answer();
     days::day20::day20_answer();
     days::day22::day22_answer();
-    days::day23::day23_answer();*/
+    days::day23::day23_answer();
     days::day24::day24_answer();
+    days::day25::day25_answer();
 }
