@@ -153,14 +153,11 @@ pub fn parse_patterns_outputs(filename: &str) -> Vec<([String; 10], [String; 4])
 }
 
 pub fn parse_heightmap(filename: &str) -> Vec<Vec<i8>> {
-    let mut height_matrix: Vec<Vec<i8>> = Vec::new();
-
-    for line in build_reader(filename).lines() {
-        let row: Vec<i8> = line.unwrap().chars().map(|n| n.to_digit(10).unwrap() as i8).collect();
-        height_matrix.push(row);
-    }
-
-    height_matrix
+    build_reader(filename)
+        .lines()
+        .into_iter()
+        .map(|row| row.unwrap().chars().map(|n| n.to_digit(10).unwrap() as i8).collect())
+        .collect()
 }
 
 pub fn parse_navigation_subsystem(filename: &str) -> Vec<String> {
