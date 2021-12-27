@@ -7,64 +7,66 @@ use std::collections::HashMap;
 const FILE: &str = "inputs/day14_input.txt";
 
 pub fn day14_answer() {
-    let (template, pairs) = parse_polymer_instructions(FILE);
-    let map_elements = count_elements(run_n_steps(&template, &pairs, 10));
+    let (template, pair_insertions) = parse_polymer_instructions(FILE);
+    
+    let map_elements = count_elements(&template, &pair_insertions, 10);
     let max_element = map_elements.values().max().unwrap();
     let min_element = map_elements.values().min().unwrap();
-
     println!("Day 14, part 1: {}", max_element - min_element);
 
-    
+    let map_elements = count_elements(&template, &pair_insertions, 40);
+    let max_element = map_elements.values().max().unwrap();
+    let min_element = map_elements.values().min().unwrap();
+    println!("Day 14, part 2: {}\n", max_element - min_element);
 }
 
-fn apply_pairs(polymer: &String, pairs: &HashMap<String, char>) -> String {
-    // Generate chunks of size 2 from polymer
-    let polymer_chars= polymer.chars().collect::<Vec<char>>();
-    let first_char = polymer_chars[0];
-    let mut polymer_chunks: Vec<String> = Vec::new();
-
-    for p in polymer_chars.windows(2) {
-        polymer_chunks.push(p.into_iter().collect());
+fn upsert_pair(pairs: &mut HashMap<String, usize>, p: String, v: usize) {
+    if pairs.contains_key(&p) {
+        *pairs.get_mut(&p).unwrap() += v;
     }
-
-    let mut new_polymer = String::from(first_char);
-
-    for mut chunk in polymer_chunks {
-        if pairs.contains_key(&chunk) {
-            chunk.insert(1, *pairs.get(&chunk).unwrap());
-            new_polymer.push_str(&chunk[1..]);
-        }
-        else {
-            new_polymer.push_str(&chunk.chars().nth(1).unwrap().to_string());
-        }
+    else {
+        pairs.insert(p, v);
     }
-
-    new_polymer
 }
 
-fn run_n_steps(template: &String, pairs: &HashMap<String, char>, steps: usize) -> String {
-    let mut polymer = template.clone();
+fn upsert_elem(elems: &mut HashMap<char, usize>, e: char, v: usize) {
+    if elems.contains_key(&e) {
+        *elems.get_mut(&e).unwrap() += v;
+    }
+    else {
+        elems.insert(e, v);
+    }
+}
+
+fn count_elements(template: &String, pair_insertions: &HashMap<String, char>, steps: usize) -> HashMap<char, usize> {
+    let mut pairs: HashMap<String, usize> = HashMap::new();
+    let mut elems: HashMap<char, usize> = HashMap::new();
+
+    let template_chars = template.chars().collect::<Vec<char>>();
+
+    for c in template_chars.iter() {
+        upsert_elem(&mut elems, *c, 1);
+    }
+
+    for p in template_chars.windows(2).map(|p| p.into_iter().collect()) {
+        upsert_pair(&mut pairs, p, 1);
+    }
 
     for _ in 0..steps {
-        polymer = apply_pairs(&mut polymer, &pairs);
-    }
+        for (pair, count) in pairs.clone() {
+            let pair_chars = pair.chars().collect::<Vec<char>>();
+            let new_elem = pair_insertions.get(&pair).unwrap();
 
-    polymer
-}
+            upsert_elem(&mut elems, new_elem.clone(), count);
+            
+            *pairs.get_mut(&pair).unwrap() -= count;
 
-fn count_elements(polymer: String) -> HashMap<char, usize> {
-    let mut chars_appearances: HashMap<char, usize> = HashMap::new();
-
-    for c in polymer.chars() {
-        if chars_appearances.contains_key(&c) {
-            *chars_appearances.get_mut(&c).unwrap() += 1;
-        }
-        else {
-            chars_appearances.insert(c, 1);
+            upsert_pair(&mut pairs, vec!(pair_chars[0], new_elem.clone()).iter().collect::<String>(), count);
+            upsert_pair(&mut pairs, vec!(*new_elem, pair_chars[1]).iter().collect::<String>(), count);
         }
     }
 
-    chars_appearances
+    elems
 }
 
 #[cfg(test)]
@@ -75,8 +77,8 @@ mod tests {
 
     #[test]
     fn day14_part1_test() {
-        let (template, pairs) = parse_polymer_instructions(FILE);
-        let map_elements = count_elements(run_n_steps(&template, &pairs, 10));
+        let (template, pair_insertions) = parse_polymer_instructions(FILE);
+        let map_elements = count_elements(&template, &pair_insertions, 10);
         let max_element = map_elements.values().max().unwrap();
         let min_element = map_elements.values().min().unwrap();
         
@@ -85,6 +87,11 @@ mod tests {
 
     #[test]
     fn day14_part2_test() {
+        let (template, pair_insertions) = parse_polymer_instructions(FILE);
+        let map_elements = count_elements(&template, &pair_insertions, 40);
+        let max_element = map_elements.values().max().unwrap();
+        let min_element = map_elements.values().min().unwrap();
         
+        assert_eq!(max_element - min_element, 2188189693529);
     }
 }
