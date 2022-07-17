@@ -1,2 +1,6 @@
 # my-rustlings
-Solving rustlings tu learn Rust
+Solving rustlings to learn Rust.
+
+
+### Thanks to
+https://github.com/rust-lang/rustlings
