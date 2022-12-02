@@ -19,17 +19,17 @@ pub fn print_answers() {
 }
 
 fn parse_input(day: &Day) -> Vec<(char, char)> {
-    let mut strat_book: Vec<(char, char)> = Vec::new();
+    let mut strat_guide: Vec<(char, char)> = Vec::new();
 
     for line in day.read_file().lines() {
         let content = line.unwrap();
         let split_chars = content.chars()
                                             .filter(|c| *c != ' ')
                                             .collect::<Vec<char>>();
-        strat_book.push((split_chars[0], split_chars[1]));
+        strat_guide.push((split_chars[0], split_chars[1]));
     }
 
-    strat_book
+    strat_guide
 }
 
 // Part 1
