@@ -10,9 +10,9 @@ const FILE: &str = "inputs/real/day02_input.txt";
 pub fn print_answers() {
     let mut day = Day::new(2, FILE.to_string());
 
-    let strat_book = parse_input(&day);
+    let strat_guide = parse_input(&day);
 
-    day.first_answer = Some(Answer::Num(0));
+    day.first_answer = Some(Answer::Num(calc_score(&strat_guide) as u64));
     day.second_answer = Some(Answer::Num(0));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
@@ -33,12 +33,29 @@ fn parse_input(day: &Day) -> Vec<(char, char)> {
     strat_book
 }
 
-fn calc_first_answer(values: Vec<u32>) -> u32 {
+// Part 1
+fn calc_score(strat_guide: &Vec<(char, char)>) -> u32 {
+    strat_guide.iter().map(|play| match_play(play)).sum()
+}
+
+// Part 2
+fn calc_second_answer(strat_guide: &Vec<(char, char)>) -> u32 {
     todo!()
 }
 
-fn calc_second_answer(values: Vec<u32>) -> u32 {
-    todo!()
+fn match_play(play: &(char, char)) -> u32 {
+    match play {
+        ('A', 'X') => 1 + 3,
+        ('B', 'X' ) => 1,
+        ('C', 'X') => 1 + 6,
+        ('A', 'Y') => 2 + 6,
+        ('B', 'Y' ) => 2 + 3,
+        ('C', 'Y') => 2,
+        ('A', 'Z') => 3,
+        ('B', 'Z' ) => 3 + 6,
+        ('C', 'Z') => 3 + 3,
+        _ => panic!("Unrecognized play!"),
+    }
 }
 
 #[cfg(test)]
@@ -48,17 +65,18 @@ mod tests {
     const FILE: &str = "inputs/tests/day02_input_test.txt";
 
     #[test]
-    fn day02_part1_test() { // Change Day01
+    fn day02_part1_test() {
         let mut day = Day::new(2, FILE.to_string());
-        let strat_book = parse_input(&day);
+        let strat_guide = parse_input(&day);
+        let ans = calc_score(&strat_guide);
 
-        assert_eq!(15, 15);
+        assert_eq!(ans, 15);
 
-        day.first_answer = Some(Answer::Num(0));
+        day.first_answer = Some(Answer::Num(ans as u64));
     }
 
     #[test]
-    fn day02_part2_test() { // Change Day01
+    fn day02_part2_test() {
         let mut day = Day::new(2, FILE.to_string());
         
 
