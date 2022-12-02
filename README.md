@@ -10,3 +10,9 @@ so I solved P1 first. Then I realized what I could reuse and decided to solve P2
 refactoring.
 
 Reused an iterator. I could have reused something easier (or nothing), but was curious about how to do it.
+
+### Day 2
+Parsing as tuples.
+
+I felt very dirty doing it. I was about to do something harder, but focused on getting the answers first
+and didn't overcomplicate myself.
