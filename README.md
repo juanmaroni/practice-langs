@@ -16,3 +16,6 @@ Parsing as tuples.
 
 I felt very dirty doing it. I was about to do something harder, but focused on getting the answers first
 and didn't overcomplicate myself.
+
+### Day 3
+Building helping function to use in iterator.
