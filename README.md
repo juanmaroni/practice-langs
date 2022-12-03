@@ -18,4 +18,4 @@ I felt very dirty doing it. I was about to do something harder, but focused on g
 and didn't overcomplicate myself.
 
 ### Day 3
-Building helping function to use in iterator.
+Building helping functions to use in iterators.
