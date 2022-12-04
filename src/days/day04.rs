@@ -19,19 +19,15 @@ pub fn print_answers() {
 }
 
 fn parse_input(day: &Day) -> Vec<Vec<Vec<u8>>> {
-    let mut section_assignment_pairs: Vec<Vec<Vec<u8>>> = Vec::new();
-
-    for line in day.read_file().lines() {
-        let content = line.unwrap();
-        let pairs = content.split(',')
-                                    .map(|pair| pair.split('-')
-                                        .map(|bound| bound.parse::<u8>().unwrap())
-                                        .collect::<Vec<u8>>())
-                                    .collect::<Vec<Vec<u8>>>();
-        section_assignment_pairs.push(pairs);
-    }
-
-    section_assignment_pairs
+    day.read_file()
+        .lines()
+        .map(|line| line.unwrap())
+        .map(|content| content.split(',')
+            .map(|pair| pair.split('-')
+                .map(|bound| bound.parse::<u8>().unwrap())
+                .collect::<Vec<u8>>())
+            .collect::<Vec<Vec<u8>>>())
+        .collect()
 }
 
 // Part 1
@@ -56,7 +52,7 @@ fn is_fully_contained(section1: &Vec<u8>, section2: &Vec<u8>) -> bool {
 
 // Helping function for Part 2
 fn is_partially_contained(section1: &Vec<u8>, section2: &Vec<u8>) -> bool {
-    (section1[0]..=section1[1]).any(|n| (section2[0]..=section2[1]).contains(&n))
+    !(section1[1] < section2[0] || section2[1] < section1[0])
 }
 
 #[cfg(test)]

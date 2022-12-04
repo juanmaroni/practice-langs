@@ -22,5 +22,3 @@ Building helping functions to use in iterators.
 
 ### Day 4
 Finding the right boolean expression.
-
-Different ways to do the helping functions.
