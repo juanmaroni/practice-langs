@@ -25,3 +25,5 @@ Finding the right boolean expression.
 
 ### Day 5
 Welcome to Parsing Hell!
+
+The input was the true puzzle.
