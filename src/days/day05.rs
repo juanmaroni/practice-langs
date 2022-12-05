@@ -7,7 +7,7 @@ use aoc2022::{Day, Part, Answer};
 const FILE: &str = "inputs/real/day05_input.txt";
 
 #[derive(Debug)]
-struct RearrangementProc {
+struct RearrangementMove {
     quantity: u8,
     from: u8,
     to: u8,
@@ -18,16 +18,17 @@ pub fn print_answers() {
 
     let (mut stacks, rearrangements) = parse_input(&day, 9);
     
-    day.first_answer = Some(Answer::Str(get_top_message(&mut stacks.clone(), &rearrangements)));
+    day.first_answer = Some(Answer::Str(get_incorrect_message(&mut stacks.clone(), &rearrangements)));
     day.second_answer = Some(Answer::Str(get_correct_message(&mut stacks, &rearrangements)));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
     day.print_answer(day.day_number, Part::Two, &day.second_answer);
 }
 
-fn parse_input(day: &Day, size: u8) -> (Vec<Vec<char>>, Vec<RearrangementProc>) {
+// See the input to know the size, it's the number of stacks
+fn parse_input(day: &Day, size: u8) -> (Vec<Vec<char>>, Vec<RearrangementMove>) {
     let mut stacks: Vec<Vec<char>> = Vec::new();
-    let mut rearrangements: Vec<RearrangementProc> = Vec::new();
+    let mut rearrangements: Vec<RearrangementMove> = Vec::new();
 
     for _ in 0..size {
         stacks.push(Vec::new());
@@ -64,7 +65,7 @@ fn parse_input(day: &Day, size: u8) -> (Vec<Vec<char>>, Vec<RearrangementProc>) 
         let content = line.unwrap();
         let split = content.split_whitespace()
                                     .collect::<Vec<&str>>();
-        rearrangements.push(RearrangementProc { quantity: split[1].parse::<u8>().unwrap(),
+        rearrangements.push(RearrangementMove { quantity: split[1].parse::<u8>().unwrap(),
                                                 from: split[3].parse::<u8>().unwrap() - 1,
                                                 to: split[5].parse::<u8>().unwrap() - 1 });
     }
@@ -73,7 +74,7 @@ fn parse_input(day: &Day, size: u8) -> (Vec<Vec<char>>, Vec<RearrangementProc>) 
 }
 
 // Part 1
-fn get_top_message(stacks: &mut Vec<Vec<char>>, rearrangements: &Vec<RearrangementProc>) -> String {
+fn get_incorrect_message(stacks: &mut Vec<Vec<char>>, rearrangements: &Vec<RearrangementMove>) -> String {
     for rp in rearrangements {
         execute_rearrangement(stacks, &rp)
     }
@@ -82,34 +83,31 @@ fn get_top_message(stacks: &mut Vec<Vec<char>>, rearrangements: &Vec<Rearrangeme
 }
 
 // Part 2
-fn get_correct_message(stacks: &mut Vec<Vec<char>>, rearrangements: &Vec<RearrangementProc>) -> String {
+fn get_correct_message(stacks: &mut Vec<Vec<char>>, rearrangements: &Vec<RearrangementMove>) -> String {
     for rp in rearrangements {
-        execute_rearrangement_9001(stacks, &rp)
+        execute_improved_rearrangement(stacks, &rp)
     }
 
     stacks.iter().map(|stack| stack[stack.len() - 1]).collect()
 }
 
-// Helping function Part 1
-fn execute_rearrangement(stacks: &mut Vec<Vec<char>>, rp: &RearrangementProc) {
+// CrateMover 9000
+fn execute_rearrangement(stacks: &mut Vec<Vec<char>>, rp: &RearrangementMove) {
     for _ in 0..rp.quantity {
         let e = stacks[rp.from as usize].pop().unwrap();
         stacks[rp.to as usize].push(e);
     }
 }
 
-// Helping function for Part 2
-fn execute_rearrangement_9001(stacks: &mut Vec<Vec<char>>, rp: &RearrangementProc) {
-    let mut elems: Vec<char> = Vec::new();
-    
-    for _ in 0..rp.quantity {
-        elems.insert(0, stacks[rp.from as usize].pop().unwrap());
-    }
+// CrateMover 9001
+fn execute_improved_rearrangement(stacks: &mut Vec<Vec<char>>, rp: &RearrangementMove) {
+    let rp_to = rp.to as usize;
+    let stack_len = stacks[rp_to].len();
 
-    for e in elems {
-        stacks[rp.to as usize].push(e);
+    for _ in 0..rp.quantity {
+        let e = stacks[rp.from as usize].pop().unwrap();
+        stacks[rp_to].insert(stack_len, e);
     }
-    
 }
 
 #[cfg(test)]
@@ -122,7 +120,7 @@ mod tests {
     fn day05_part1_test() {
         let mut day = Day::new(5, FILE.to_string());
         let (mut stacks, rearrangements) = parse_input(&day, 3);
-        let ans = get_top_message(&mut stacks, &rearrangements);
+        let ans = get_incorrect_message(&mut stacks, &rearrangements);
 
         assert_eq!(&ans, "CMZ");
 
