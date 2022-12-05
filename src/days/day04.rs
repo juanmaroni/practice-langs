@@ -62,7 +62,7 @@ mod tests {
     const FILE: &str = "inputs/tests/day04_input_test.txt";
 
     #[test]
-    fn day04_part4_test() {
+    fn day04_part1_test() {
         let mut day = Day::new(4, FILE.to_string());
         let section_assignment_pairs = parse_input(&day);
         let ans = count_fully_overlapped_pairs(&section_assignment_pairs);
