@@ -28,23 +28,20 @@ fn parse_input(day: &Day) -> String {
 
 // Part 1
 fn first_marker_appearance(datastream: &String) -> u64 {
-    find_text(&datastream, 4).1 as u64
+    find_text(&datastream, 4) as u64
 }
 
 // Part 2
 fn first_message_appearance(datastream: &String) -> u64 {
-    find_text(&datastream, 14).1 as u64
+    find_text(&datastream, 14) as u64
 }
 
-// Helping function to find marker/message (text) and first appearance, based on a size
-fn find_text(datastream: &String, packet_size: usize) -> (String, usize) {
-    let mut text = String::new();
+// Helping function to find first appearance, based on a size
+fn find_text(datastream: &String, packet_size: usize) -> usize {
     let mut count = 0;
 
-    for w in datastream.chars().collect::<Vec<char>>().windows(packet_size) {
-        text = w.iter().unique().collect::<String>();
-        
-        if text.len() == packet_size {
+    for w in datastream.chars().collect::<Vec<char>>().windows(packet_size) {        
+        if w.iter().unique().count() == packet_size {
             count += packet_size;
             break;
         }
@@ -52,7 +49,7 @@ fn find_text(datastream: &String, packet_size: usize) -> (String, usize) {
         count += 1;
     }
 
-    (text, count)
+    count
 }
 
 #[cfg(test)]

@@ -31,6 +31,7 @@ The input was the true puzzle.
 ### Day 6
 I could have used a vector of chars to collect the input, but wanted to keep the original form.
 
-I decided to return the marker/message and the first time it appeared, just in case I needed everything later.
+I made a version that returns the marker/message and the first time it appeared, just in case I needed everything later.
+Changed it to only return the first appearance.
 
 It felt easy.
