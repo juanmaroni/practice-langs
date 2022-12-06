@@ -27,3 +27,8 @@ Finding the right boolean expression.
 Welcome to Parsing Hell!
 
 The input was the true puzzle.
+
+### Day 6
+I could have used "Vec<char>" to collect the input, but wanted to keep the original form.
+
+For Part 1, I decided to return the marker and the first time it appeared.
