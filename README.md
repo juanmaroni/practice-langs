@@ -29,6 +29,8 @@ Welcome to Parsing Hell!
 The input was the true puzzle.
 
 ### Day 6
-I could have used "Vec<char>" to collect the input, but wanted to keep the original form.
+I could have used a vector of chars to collect the input, but wanted to keep the original form.
 
-For Part 1, I decided to return the marker and the first time it appeared.
+I decided to return the marker/message and the first time it appeared, just in case I needed everything later.
+
+It felt easy.
