@@ -13,7 +13,7 @@ pub fn print_answers() {
     let datastream = parse_input(&day);
 
     day.first_answer = Some(Answer::Num(first_marker_appearance(&datastream) as u64));
-    day.second_answer = Some(Answer::Num(0));
+    day.second_answer = Some(Answer::Num(first_message_appearance(&datastream) as u64));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
     day.print_answer(day.day_number, Part::Two, &day.second_answer);
@@ -32,8 +32,8 @@ fn first_marker_appearance(datastream: &String) -> u32 {
 }
 
 // Part 2
-fn calc_second_answer(datastream: &String) -> u32 {
-    todo!()
+fn first_message_appearance(datastream: &String) -> u32 {
+    find_message(&datastream).1
 }
 
 fn find_marker(datastream: &String) -> (String, u32) {
@@ -52,6 +52,24 @@ fn find_marker(datastream: &String) -> (String, u32) {
     }
 
     (marker, count)
+}
+
+fn find_message(datastream: &String) -> (String, u32) {
+    let mut message = String::new();
+    let mut count = 0;
+
+    for w in datastream.chars().collect::<Vec<char>>().windows(14) {
+        message = w.iter().unique().collect::<String>();
+        
+        if message.len() == 14 {
+            count += 14;
+            break;
+        }
+
+        count += 1;
+    }
+
+    (message, count)
 }
 
 #[cfg(test)]
@@ -76,9 +94,13 @@ mod tests {
     #[test]
     fn day06_part2_test() {
         let mut day = Day::new(6, FILE.to_string());
+        let datastream = parse_input(&day);
+        let ans = first_message_appearance(&datastream);
+        assert_eq!(ans, 19);
 
-        assert_eq!(5, 5);
+        let datastream2 = String::from("bvwbjplbgvbhsrlpgdmjqwftvncz");
+        assert_eq!(first_message_appearance(&datastream2), 23);
 
-        day.second_answer = Some(Answer::Num(0));
+        day.second_answer = Some(Answer::Num(ans as u64));
     }
 }
