@@ -7,4 +7,5 @@ fn main() {
     days::day04::print_answers();
     days::day05::print_answers();
     days::day06::print_answers();
+    days::day07::print_answers();
 }
