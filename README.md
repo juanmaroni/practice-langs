@@ -35,3 +35,11 @@ I made a version that returns the marker/message and the first time it appeared,
 Changed it to only return the first appearance.
 
 It felt easy.
+
+### Day 7
+Parsing Purgatory.
+
+I had to rewrite the parser: it worked for the example, not for my input. Probably because there were multiple directories with the same
+name. Another try also worked with the example, but not with my input.
+
+I will try another day.
