@@ -11,7 +11,7 @@ pub fn print_answers() {
 
     let tree_grid = parse_input(&day);
 
-    day.first_answer = Some(Answer::Num(count_visible_trees(&tree_grid) as u64));
+    day.first_answer = Some(Answer::Num(count_visible_trees(&tree_grid)));
     day.second_answer = Some(Answer::Num(get_highest_score(&tree_grid)));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
@@ -30,20 +30,15 @@ fn parse_input(day: &Day) -> Vec<Vec<u8>> {
 }
 
 // Part 1
-fn count_visible_trees(tree_grid: &Vec<Vec<u8>>) -> u16 {
+fn count_visible_trees(tree_grid: &Vec<Vec<u8>>) -> u64 {
     let grid_len_x = tree_grid.len() - 1;
     let grid_len_y = tree_grid[0].len() - 1;
-    let mut count = (grid_len_x * 2 + grid_len_y * 2) as u16;
 
-    for x in 1..grid_len_x {
-        for y in 1..grid_len_y {
-            if check_viewable(x, grid_len_x, y, grid_len_y, tree_grid) {
-                count += 1;   
-            }
-        }
-    }
-    
-    count
+    ((1..grid_len_x)
+        .map(|x| (1..grid_len_y)
+            .filter(|y| check_viewable(x, grid_len_x, y, grid_len_y, tree_grid))
+            .count())
+        .sum::<usize>() + grid_len_x * 2 + grid_len_y * 2) as u64
 }
 
 // Part 2
@@ -51,16 +46,20 @@ fn get_highest_score(tree_grid: &Vec<Vec<u8>>) -> u64 {
     let grid_len_x = tree_grid.len() - 1;
     let grid_len_y = tree_grid[0].len() - 1;
 
-    (1..grid_len_y).map(|y| (1..grid_len_x).map(|x| calc_score(x, grid_len_x, y, grid_len_y, tree_grid))
+    (1..grid_len_x)
+        .map(|x| (1..grid_len_y)
+            .map(|y| calc_score(x, grid_len_x, y, grid_len_y, tree_grid))
+            .max()
+            .unwrap())
         .max()
-        .unwrap())
-    .max()
-    .unwrap()
+        .unwrap()
 }
 
 // Helping function for Part 1
-fn check_viewable(x: usize, grid_len_x: usize, y: usize, grid_len_y: usize, tree_grid: &Vec<Vec<u8>>) -> bool {
+fn check_viewable(x: usize, grid_len_x: usize, y: &usize, grid_len_y: usize, tree_grid: &Vec<Vec<u8>>) -> bool {
+    let y = *y;
     let elem = tree_grid[x][y];
+    // Counting from how many directions (max. 4) we can't see the tree
     let mut non_viewable: u8 = 0;
 
     // Left
@@ -156,7 +155,7 @@ mod tests {
 
         assert_eq!(ans, 21);
 
-        day.first_answer = Some(Answer::Num(ans as u64));
+        day.first_answer = Some(Answer::Num(ans));
     }
 
     #[test]
