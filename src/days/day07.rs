@@ -3,8 +3,8 @@
 
 use std::io::BufRead;
 use std::collections::HashMap;
-use aoc2022::{Day, Part, Answer};
 use itertools::Itertools;
+use aoc2022::{Day, Part, Answer};
 
 const FILE: &str = "inputs/real/day07_input.txt";
 const DISK_SPACE_AVAILABLE: u64 = 70_000_000;
@@ -23,7 +23,7 @@ pub fn print_answers() {
 }
 
 fn parse_input(day: &Day) -> HashMap<String, Vec<(u64, String)>> {
-    // Key: path.
+    // Key: dir path.
     // Values: file and size.
     let mut fs_tree: HashMap<String, Vec<(u64, String)>> = HashMap::new();
     // Keeping track of current directory
@@ -34,7 +34,6 @@ fn parse_input(day: &Day) -> HashMap<String, Vec<(u64, String)>> {
     for line in day.read_file().lines() {
         let content = line.unwrap();
         let cmd = content[..4].to_string();
-        //let dir_path = track_dirs.iter().join("/");
         
         if content == cd_dotdot {
             track_dirs.pop();
@@ -76,32 +75,31 @@ fn sum_sizes_up_to_100000(fs_tree: &HashMap<String, Vec<(u64, String)>>) -> u64 
     fs_tree.iter()
         .map(|(k, _)| sum_filesizes(k, &fs_tree))
         .filter(|sum| *sum <= 100000)
-        .sum() //1394611 high
+        .sum()
 }
 
 // Part 2
 fn smallest_dir_delete(fs_tree: &HashMap<String, Vec<(u64, String)>>) -> u64 {
-    let mut dirs_size = fs_tree.iter().map(|(k, _)| sum_filesizes(k, &fs_tree) as i64).sorted().rev();
-    let total_used = dirs_size.next().unwrap();
-    let unused_space = DISK_SPACE_AVAILABLE as i64 - total_used;
-    let required_space = DISK_SPACE_NEEDED as i64 - unused_space;
+    let dirs_size = fs_tree.iter().map(|(k, _)| sum_filesizes(k, &fs_tree)).sorted();
+    let total_used = dirs_size.clone().max().unwrap();
+    let unused_space = DISK_SPACE_AVAILABLE - total_used;
+    let required_space = DISK_SPACE_NEEDED - unused_space;
     let mut last_dir_size = total_used;
 
-    for size in dirs_size.rev() {
-        println!("SIZE: {:?}", size);
+    for size in dirs_size {
         if size >= required_space {
             last_dir_size = size;
             break;
         }
     }
 
-    last_dir_size as u64
+    last_dir_size
 }
 
-// Helping functions for Part 1
+// Helping functions
 fn sum_filesizes(key: &String, fs_tree: &HashMap<String, Vec<(u64, String)>>) -> u64 {
     let mut total_size = 0;
-    let mut key_cp = key.clone();
+    let key_cp = key.clone();
 
     for v in fs_tree.get(&key_cp) {
         total_size += recursive_sum_filesize(&key_cp, v, fs_tree);
@@ -115,7 +113,6 @@ fn recursive_sum_filesize(key: &String, content: &Vec<(u64, String)>, fs_tree: &
     let mut key_cp = key.clone();
 
     for (s, n) in content {
-        //println!("{:?}", key);
         if *s == 0 {
             key_cp.push_str(n);
             key_cp.push('/');
@@ -127,7 +124,6 @@ fn recursive_sum_filesize(key: &String, content: &Vec<(u64, String)>, fs_tree: &
             }
 
             key_cp = key.clone();
-
         } else {
             total_size += s;
         }
