@@ -43,3 +43,6 @@ I had to rewrite the parser: it worked for the example, not for my input. Probab
 name. Another try also worked with the example, but not with my input.
 
 I will try another day.
+
+### Day 8
+Basically, view from outside and from inside.
