@@ -42,7 +42,9 @@ Parsing Purgatory.
 I had to rewrite the parser: it worked for the example, not for my input. Probably because there were multiple directories with the same
 name. Another try also worked with the example, but not with my input.
 
-I will try another day.
+I misunderstood the text. 🤦‍♂️
+
+The same helping functions worked for both parts.
 
 ### Day 8
 Basically, view from outside and from inside.
