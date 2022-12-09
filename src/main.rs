@@ -9,4 +9,5 @@ fn main() {
     days::day06::print_answers();
     days::day07::print_answers();
     days::day08::print_answers();
+    days::day09::print_answers();
 }
