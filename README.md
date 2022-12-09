@@ -48,3 +48,6 @@ The same helping functions worked for both parts.
 
 ### Day 8
 Basically, view from outside and from inside.
+
+### Day 9
+Not in the mood, I decided to leave it for later.
