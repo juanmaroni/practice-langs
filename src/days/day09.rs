@@ -3,7 +3,6 @@
 
 use std::io::BufRead;
 use std::collections::HashSet;
-use itertools::Itertools;
 use aoc2022::{Day, Part, Answer};
 
 const FILE: &str = "inputs/real/day09_input.txt";
@@ -12,9 +11,8 @@ pub fn print_answers() {
     let mut day = Day::new(9, FILE.to_string());
 
     let motions = parse_input(&day);
-    get_unique_positions(&motions);
 
-    day.first_answer = Some(Answer::Num(0));
+    day.first_answer = Some(Answer::Num(count_unique_positions_tail(&motions)));
     day.second_answer = Some(Answer::Num(0));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
@@ -36,9 +34,8 @@ fn parse_input(day: &Day) -> Vec<(char, u8)> {
 }
 
 // Part 1
-fn count_unique_positions_tail(motions: &Vec<(char, u8)>) -> u32 {
-
-    todo!()
+fn count_unique_positions_tail(motions: &Vec<(char, u8)>) -> u64 {
+    get_unique_positions(motions).len() as u64
 }
 
 // Part 2
@@ -48,7 +45,7 @@ fn calc_second_answer(motions: &Vec<(char, u8)>) -> u32 {
 
 // Helping function for Part 1
 fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
-    // Positions as tuples (x, y).
+    // Positions as tuples (x, y)
     let mut unique_positions_tail: HashSet<(i16, i16)> = HashSet::new();
 
     let mut head_pos = (0, 0);
@@ -60,9 +57,11 @@ fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
             (head_pos, tail_pos) = head_motion(*d, head_pos, tail_pos);
 
             unique_positions_tail.insert(tail_pos);
-            println!("{:?}", tail_pos);
+            //println!("H: {:?} => T: {:?}", head_pos, tail_pos);
         }        
     }
+
+    //println!("Unique: {:?}", unique_positions_tail);
     
     unique_positions_tail
 }
@@ -85,8 +84,8 @@ fn tail_motion(head_pos: (i16, i16), mut tail_pos: (i16, i16)) -> (i16, i16) {
     let (head_x, head_y) = head_pos;
     let (tail_x, tail_y) = tail_pos;
 
-    let dis_x = head_x.abs() - tail_x.abs();
-    let dis_y = head_y.abs() - tail_y.abs();
+    let dis_x = (head_x.abs() - tail_x.abs()).abs();
+    let dis_y = (head_y.abs() - tail_y.abs()).abs();
     
     if dis_x == 2 && dis_y == 0 { // X-axis
         if head_x > tail_x {
@@ -100,7 +99,7 @@ fn tail_motion(head_pos: (i16, i16), mut tail_pos: (i16, i16)) -> (i16, i16) {
         } else if head_y < tail_y {
             tail_pos.1 -= 1;
         }
-    } else if dis_x == 2 && dis_y == 1 { // Diagonally THERE ARE FOUR
+    } else if (dis_x == 2 && dis_y == 1) || (dis_x == 1 && dis_y == 2) { // Diagonally
         if head_x > tail_x {
             tail_pos.0 += 1;
         } else if head_x < tail_x {
@@ -111,18 +110,6 @@ fn tail_motion(head_pos: (i16, i16), mut tail_pos: (i16, i16)) -> (i16, i16) {
             tail_pos.1 += 1;
         } else if head_y < tail_y {
             tail_pos.1 -= 1;
-        }
-    } else if dis_x == 1 && dis_y == 2 { // Diagonally
-        if head_y > tail_y {
-            tail_pos.1 += 1;
-        } else if head_y < tail_y {
-            tail_pos.1 -= 1;
-        }
-
-        if head_x > tail_x {
-            tail_pos.0 += 1;
-        } else if head_x < tail_x {
-            tail_pos.0 -= 1;
         }
     }
 
@@ -139,12 +126,11 @@ mod tests {
     fn day09_part1_test() {
         let mut day = Day::new(9, FILE.to_string());
         let motions = parse_input(&day);
-        println!("{:?}", motions);
-        get_unique_positions(&motions);
+        let ans = count_unique_positions_tail(&motions);
 
-        assert_eq!(13, 13);
+        assert_eq!(ans, 13);
 
-        day.first_answer = Some(Answer::Num(0));
+        day.first_answer = Some(Answer::Num(ans));
     }
 
     #[test]
