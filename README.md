@@ -51,3 +51,6 @@ Basically, view from outside and from inside.
 
 ### Day 9
 Not in the mood, I decided to leave it for later.
+
+### Day 10
+No useful test for Part 2.
