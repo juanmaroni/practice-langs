@@ -65,8 +65,8 @@ fn execute_instructions_given_cycles(instructions: &Vec<(String, i8)>) -> (Vec<i
     screen[0] = '#';
     screen[39] = '#';
     screen[40] = '#';
+    screen[79] = '#';
     screen[80] = '#';
-    screen[81] = '#';
     screen[119] = '#';
     screen[120] = '#';
     screen[159] = '#';
