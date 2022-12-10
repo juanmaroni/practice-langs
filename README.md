@@ -54,3 +54,5 @@ Not in the mood, I decided to leave it for later.
 
 ### Day 10
 No useful test for Part 2.
+
+My answer for Part 2 was "ELPLZGZL", but the last "L" could have been mistaken for an "U".
