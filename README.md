@@ -56,3 +56,8 @@ Not in the mood, I decided to leave it for later.
 No useful test for Part 2.
 
 After submitting my answers correctly, I realized that I may have a mistake in the code that doesn't render the text properly.
+
+### Day 11
+I wanted to try without parsing input files.
+
+Part 2 was about math, and I have to say that I am not superb at it, I needed help.
