@@ -14,7 +14,7 @@ struct Monkey {
     div_by: u16, // Test: divisible by
     test_true: usize, // If true: throw to monkey X
     test_false: usize, // If false: throw to monkey Y
-    inspections: u16, // Number of inspections
+    inspections: u64, // Number of inspections
 }
 
 pub fn print_answers() {
@@ -23,7 +23,7 @@ pub fn print_answers() {
     let monkeys = get_info_monkeys();
 
     day.first_answer = Some(Answer::Num(calc_monkey_business(monkeys.clone(), 20)));
-    day.second_answer = Some(Answer::Num(0));
+    day.second_answer = Some(Answer::Num(calc_monkey_business_relief(monkeys.clone(), 10000)));
 
     day.print_answer(day.day_number, Part::One, &day.first_answer);
     day.print_answer(day.day_number, Part::Two, &day.second_answer);
@@ -50,11 +50,6 @@ fn calc_monkey_business(monkeys: Vec<Monkey>, rounds: usize) -> u64 {
         monkeys = inspect_and_throw_round(monkeys);
     }
 
-    for m in monkeys.clone() { //DELETE
-        println!("Inspecciones de Mono [{:?}]: {:?}", m.number, m.inspections);
-    }
-    
-    
     monkeys.iter()
         .map(|m| m.inspections as u64)
         .sorted()
@@ -64,8 +59,20 @@ fn calc_monkey_business(monkeys: Vec<Monkey>, rounds: usize) -> u64 {
 }
 
 // Part 2
-fn calc_second_answer(values: Vec<u32>) -> u64 {
-    todo!()
+fn calc_monkey_business_relief(monkeys: Vec<Monkey>, rounds: usize) -> u64 {
+    let mut monkeys = monkeys;
+    let relief = monkeys.clone().iter().map(|m| m.div_by as u64).product::<u64>();
+
+    for _ in 0..rounds {
+        monkeys = inspect_and_throw_round_relief(monkeys, relief);
+    }
+
+    monkeys.iter()
+        .map(|m| m.inspections as u64)
+        .sorted()
+        .rev()
+        .take(2)
+        .product::<u64>()
 }
 
 // Helping function for Part 1
@@ -112,6 +119,50 @@ fn inspect_and_throw_round(mut monkeys: Vec<Monkey>) -> Vec<Monkey> {
     monkeys
 }
 
+// Helping function for Part 2
+fn inspect_and_throw_round_relief(mut monkeys: Vec<Monkey>, relief: u64) -> Vec<Monkey> {
+    let monkeys_len = monkeys.len();
+
+    for n in 0..monkeys_len {
+        let mut new_monkeys = monkeys.clone();
+        let mut m = monkeys[n].clone();
+
+        for i in &mut m.items {
+            let mut item = *i as u64;
+
+            if m.operation.1 == "old" {
+                if m.operation.0 == '+' {
+                    item += item;
+                } else if m.operation.0 == '*' {
+                    item *= item;
+                }
+            } else {
+                if m.operation.0 == '+' {
+                    item += m.operation.1.parse::<u64>().unwrap();
+                } else if m.operation.0 == '*' {
+                    item *= m.operation.1.parse::<u64>().unwrap();
+                }
+            }
+
+            // Worry level
+            item = item % relief as u64;
+
+            if item % m.div_by as u64 == 0 {
+                new_monkeys[m.test_true].items.push(item as u32);
+            } else {
+                new_monkeys[m.test_false].items.push(item as u32);
+            }
+
+            new_monkeys[m.number as usize].items.remove(0);
+            new_monkeys[m.number as usize].inspections += 1;
+        }
+        
+        monkeys = new_monkeys;
+    }
+
+    monkeys
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -135,16 +186,17 @@ mod tests {
 
         assert_eq!(ans, 10605);
 
-        day.first_answer = Some(Answer::Num(0));
+        day.first_answer = Some(Answer::Num(ans));
     }
 
     #[test]
     fn day11_part2_test() {
         let mut day = Day::new(11, FILE.to_string());
         let monkeys = get_info_monkeys_test();
+        let ans = calc_monkey_business_relief(monkeys, 10000);
 
-        assert_eq!(5, 5);
+        assert_eq!(ans, 2713310158);
 
-        day.second_answer = Some(Answer::Num(0));
+        day.second_answer = Some(Answer::Num(ans));
     }
 }
