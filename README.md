@@ -50,7 +50,7 @@ The same helping functions worked for both parts.
 Basically, view from outside and from inside.
 
 ### Day 9
-Not in the mood, I decided to leave it for later.
+I got very tangled. The example didn't contain negative steps, so my test was mostly useless.
 
 ### Day 10
 No useful test for Part 2.
