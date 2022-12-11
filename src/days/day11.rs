@@ -1,8 +1,8 @@
 // Advent of Code 2022
 // Day 11: Monkey in the Middle
 
-use aoc2022::{Day, Part, Answer};
 use itertools::Itertools;
+use aoc2022::{Day, Part, Answer};
 
 const FILE: &str = "inputs/real/day11_input.txt";
 
@@ -15,6 +15,20 @@ struct Monkey {
     test_true: usize, // If true: throw to monkey X
     test_false: usize, // If false: throw to monkey Y
     inspections: u64, // Number of inspections
+}
+
+impl Monkey {
+    fn new(number: u8, items: Vec<u32>, operation: (char, &str), div_by: u16, test_true: usize, test_false: usize) -> Monkey {
+        Monkey {
+            number: number,
+            items: items,
+            operation: (operation.0, String::from(operation.1)),
+            div_by: div_by,
+            test_true: test_true,
+            test_false: test_false,
+            inspections: 0,
+        }
+    }
 }
 
 pub fn print_answers() {
@@ -30,14 +44,14 @@ pub fn print_answers() {
 }
 
 fn get_info_monkeys() -> Vec<Monkey> {
-    let m0 = Monkey { number: 0, items: vec![83, 62, 93], operation: ('*', "17".to_string()), div_by: 2, test_true: 1, test_false: 6, inspections: 0 };
-    let m1 = Monkey { number: 1, items: vec![90, 55], operation: ('+', "1".to_string()), div_by: 17, test_true: 6, test_false: 3, inspections: 0 };
-    let m2 = Monkey { number: 2, items: vec![91, 78, 80, 97, 79, 88], operation: ('+', "3".to_string()), div_by: 19, test_true: 7, test_false: 5, inspections: 0 };
-    let m3 = Monkey { number: 3, items: vec![64, 80, 83, 89, 59], operation: ('+', "5".to_string()), div_by: 3, test_true: 7, test_false: 2, inspections: 0 };
-    let m4 = Monkey { number: 4, items: vec![98, 92, 99, 51], operation: ('*', "old".to_string()), div_by: 5, test_true: 0, test_false: 1, inspections: 0 };
-    let m5 = Monkey { number: 5, items: vec![68, 57, 95, 85, 98, 75, 98, 75], operation: ('+', "2".to_string()), div_by: 13, test_true: 4, test_false: 0, inspections: 0 };
-    let m6 = Monkey { number: 6, items: vec![74], operation: ('+', "4".to_string()), div_by: 7, test_true: 3, test_false: 2, inspections: 0 };
-    let m7 = Monkey { number: 7, items: vec![68, 64, 60, 68, 87, 80, 82], operation: ('*', "19".to_string()), div_by: 11, test_true: 4, test_false: 5, inspections: 0 };
+    let m0 = Monkey::new(0, vec![83, 62, 93], ('*', "17"), 2, 1, 6);
+    let m1 = Monkey::new(1, vec![90, 55], ('+', "1"), 17, 6, 3);
+    let m2 = Monkey::new(2, vec![91, 78, 80, 97, 79, 88], ('+', "3"), 19, 7, 5);
+    let m3 = Monkey::new(3, vec![64, 80, 83, 89, 59], ('+', "5"), 3, 7, 2);
+    let m4 = Monkey::new(4, vec![98, 92, 99, 51], ('*', "old"), 5, 0, 1);
+    let m5 = Monkey::new(5, vec![68, 57, 95, 85, 98, 75, 98, 75], ('+', "2"), 13, 4, 0);
+    let m6 = Monkey::new(6, vec![74], ('+', "4"), 7, 3, 2);
+    let m7 = Monkey::new(7, vec![68, 64, 60, 68, 87, 80, 82], ('*', "19"), 11, 4, 5);
 
     vec![m0, m1, m2, m3, m4, m5, m6, m7]
 }
@@ -61,7 +75,10 @@ fn calc_monkey_business(monkeys: Vec<Monkey>, rounds: usize) -> u64 {
 // Part 2
 fn calc_monkey_business_relief(monkeys: Vec<Monkey>, rounds: usize) -> u64 {
     let mut monkeys = monkeys;
-    let relief = monkeys.clone().iter().map(|m| m.div_by as u64).product::<u64>();
+    let relief = monkeys.clone()
+        .iter()
+        .map(|m| m.div_by as u64)
+        .product::<u64>();
 
     for _ in 0..rounds {
         monkeys = inspect_and_throw_round_relief(monkeys, relief);
@@ -170,10 +187,10 @@ mod tests {
     const FILE: &str = "inputs/tests/day11_input_test.txt";
 
     fn get_info_monkeys_test() -> Vec<Monkey> {
-        let m0 = Monkey { number: 0, items: vec![79, 98], operation: ('*', "19".to_string()), div_by: 23, test_true: 2, test_false: 3, inspections: 0 };
-        let m1 = Monkey { number: 1, items: vec![54, 65, 75, 74], operation: ('+', "6".to_string()), div_by: 19, test_true: 2, test_false: 0, inspections: 0 };
-        let m2 = Monkey { number: 2, items: vec![79, 60, 97], operation: ('*', "old".to_string()), div_by: 13, test_true: 1, test_false: 3, inspections: 0 };
-        let m3 = Monkey { number: 3, items: vec![74], operation: ('+', "3".to_string()), div_by: 17, test_true: 0, test_false: 1, inspections: 0 };
+        let m0 = Monkey::new(0, vec![79, 98], ('*', "19"), 23, 2, 3);
+        let m1 = Monkey::new(1, vec![54, 65, 75, 74], ('+', "6"), 19, 2,  0);
+        let m2 = Monkey::new(2, vec![79, 60, 97], ('*', "old"), 13, 1, 3);
+        let m3 = Monkey::new(3, vec![74], ('+', "3"), 17, 0, 1);
     
         vec![m0, m1, m2, m3]
     }
