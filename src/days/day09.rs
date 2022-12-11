@@ -43,7 +43,7 @@ fn calc_second_answer(motions: &Vec<(char, u8)>) -> u32 {
     todo!()
 }
 
-// Helping function for Part 1
+// Helping functions for Part 1
 fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
     // Positions as tuples (x, y)
     let mut unique_positions_tail: HashSet<(i16, i16)> = HashSet::new();
@@ -54,10 +54,10 @@ fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
 
     for (d, s) in motions {
         for _ in 0..*s {
-            (head_pos, tail_pos) = head_motion(*d, head_pos, tail_pos);
+            head_pos = head_motion(*d, head_pos);
+            tail_pos = tail_motion(head_pos, tail_pos);
 
             unique_positions_tail.insert(tail_pos);
-            //println!("H: {:?} => T: {:?}", head_pos, tail_pos);
         }        
     }
 
@@ -66,50 +66,51 @@ fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
     unique_positions_tail
 }
 
-fn head_motion(dir: char, mut head_pos: (i16, i16), tail_pos: (i16, i16)) -> ((i16, i16), (i16, i16)) {
-    if dir == 'U' {
-        head_pos.1 += 1;
-    } else if dir == 'D' {
-        head_pos.1 -= 1;
-    } else if dir == 'R' {
-        head_pos.0 += 1;
-    } else if dir == 'L' {
-        head_pos.0 -= 1;
+fn head_motion(dir: char, mut head_pos: (i16, i16)) -> (i16, i16) {
+    match dir {
+        'U' => head_pos.1 += 1,
+        'D' => head_pos.1 -= 1,
+        'R' => head_pos.0 += 1,
+        'L' => head_pos.0 -= 1,
+        _ => panic!("Unrecognized direction!"),
     }
 
-    (head_pos, tail_motion(head_pos, tail_pos))
+    head_pos
 }
 
 fn tail_motion(head_pos: (i16, i16), mut tail_pos: (i16, i16)) -> (i16, i16) {
     let (head_x, head_y) = head_pos;
     let (tail_x, tail_y) = tail_pos;
 
-    let dis_x = (head_x.abs() - tail_x.abs()).abs();
-    let dis_y = (head_y.abs() - tail_y.abs()).abs();
-    
-    if dis_x == 2 && dis_y == 0 { // X-axis
-        if head_x > tail_x {
-            tail_pos.0 += 1;
-        } else if head_x < tail_x {
-            tail_pos.0 -= 1;
+    let dis_x = head_x - tail_x;
+    let dis_x_abs = dis_x.abs();
+    let dis_y = head_y - tail_y;
+    let dis_y_abs = dis_y.abs();
+
+    if dis_x_abs == 2 && dis_y == 0 {
+        if dis_x > 0 {
+            tail_pos.0 += 1
+        } else {
+            tail_pos.0 -= 1
         }
-    } else if dis_y == 2 && dis_x == 0 { // Y-axis
-        if head_y > tail_y {
-            tail_pos.1 += 1;
-        } else if head_y < tail_y {
-            tail_pos.1 -= 1;
+    } else if dis_y_abs == 2 && dis_x == 0 {
+        if dis_y > 0 {
+            tail_pos.1 += 1
+        } else {
+            tail_pos.1 -= 1
         }
-    } else if (dis_x == 2 && dis_y == 1) || (dis_x == 1 && dis_y == 2) { // Diagonally
-        if head_x > tail_x {
-            tail_pos.0 += 1;
-        } else if head_x < tail_x {
-            tail_pos.0 -= 1;
+    } else if (dis_y_abs == 2 && (dis_x_abs == 1 || dis_x_abs == 2)) ||
+              (dis_x_abs == 2 && (dis_y_abs == 1 || dis_y_abs == 2)) {
+        if dis_x > 0 {
+            tail_pos.0 += 1
+        } else {
+            tail_pos.0 -= 1
         }
 
-        if head_y > tail_y {
-            tail_pos.1 += 1;
-        } else if head_y < tail_y {
-            tail_pos.1 -= 1;
+        if dis_y > 0 {
+            tail_pos.1 += 1
+        } else {
+            tail_pos.1 -= 1
         }
     }
 
