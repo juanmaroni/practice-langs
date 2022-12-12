@@ -56,6 +56,7 @@ I got very tangled. The example didn't contain negative steps, so my test was mo
 No useful test for Part 2.
 
 After submitting my answers correctly, I realized that I may have a mistake in the code that doesn't render the text properly.
+I fixed it.
 
 ### Day 11
 I wanted to try without parsing input files.
