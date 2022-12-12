@@ -119,14 +119,18 @@ fn add_asked_cycles(cycle: u16, reg_x: i32, signal_strengths: &mut Vec<i32>) {
 
 // Helping functions for Part 2
 fn get_current_pixels(cycle: u16) -> (i32, i32, i32) {
-    let px_start = (cycle as i32 - 1) % 40;
+    let px_start = (cycle as i32) % 40;
     
     (px_start, px_start + 1, px_start + 2)
 }
 
 fn draw_lit_pixel(cycle: u16, px1: i32, px2: i32, px3: i32, reg_x: i32, screen: &mut Vec<char>) {
+    let reg_x = reg_x + 1;
+
     if px1 == reg_x || px2 == reg_x || px3 == reg_x {
         screen[cycle as usize - 1] = '#';
+    } else {
+        screen[cycle as usize - 1] = '.';
     }
 }
 
