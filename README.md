@@ -61,3 +61,6 @@ After submitting my answers correctly, I realized that I may have a mistake in t
 I wanted to try without parsing input files.
 
 Part 2 was about math, and I have to say that I am not superb at it, I needed help.
+
+### Day 12
+I always get stuck on path finding problems. Leaving it for later.
