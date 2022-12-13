@@ -65,3 +65,8 @@ Part 2 was about math, and I have to say that I am not superb at it, I needed he
 
 ### Day 12
 I always get stuck on path finding problems. Leaving it for later.
+
+### Day 13
+This parsing, man... 🤯
+
+See ya later.
