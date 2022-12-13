@@ -67,6 +67,6 @@ Part 2 was about math, and I have to say that I am not superb at it, I needed he
 I always get stuck on path finding problems. Leaving it for later.
 
 ### Day 13
-This parsing, man... 🤯
+This parsing, man... Snailfish numbers flashbacks. 🤯
 
 See ya later.
