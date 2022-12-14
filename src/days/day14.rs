@@ -1,7 +1,7 @@
 // Advent of Code 2022
 // Day 14: Regolith Reservoir
 
-use std::io::BufRead;
+use std::{io::BufRead, collections::HashSet};
 use aoc2022::{Day, Part, Answer};
 
 const FILE: &str = "inputs/real/day14_input.txt";
@@ -9,7 +9,7 @@ const FILE: &str = "inputs/real/day14_input.txt";
 pub fn print_answers() {
     let mut day = Day::new(14, FILE.to_string());
 
-    let rockpaths = parse_input(&day);
+    let rock_points = get_rock_points(parse_input(&day));
 
     day.first_answer = Some(Answer::Num(0));
     day.second_answer = Some(Answer::Num(0));
@@ -30,13 +30,45 @@ fn parse_input(day: &Day) -> Vec<Vec<Vec<u16>>> {
         .collect()
 }
 
+// Helping function for parsing
+fn get_rock_points(rockpaths: Vec<Vec<Vec<u16>>>) -> HashSet<(u16, u16)> {
+    let mut rock_points: HashSet<(u16, u16)> = HashSet::new();
+    
+    for i in rockpaths {
+        for rp in i.windows(2) {
+            let px1 = rp[0][0];
+            let py1 = rp[0][1];
+            let px2 = rp[1][0];
+            let py2 = rp[1][1];
+    
+            if px1 == px2 {
+                if py1 > py2 {
+                    rock_points.extend((py2..=py1).map(|y| (px1, y)));
+                } else {
+                    rock_points.extend((py1..=py2).map(|y| (px1, y)));
+                }
+            } else if py1 == py2 {
+                if px1 > px2 {
+                    rock_points.extend((px2..=px1).map(|x| (x, py1)));
+                } else {
+                    rock_points.extend((px1..=px2).map(|x| (x, py1)));
+                }
+            }
+        }
+    }
+
+    rock_points
+}
+
 // Part 1
-fn calc_first_answer(values: Vec<u32>) -> u64 {
+fn count_units_sand(rock_points: &HashSet<(u16, u16)>) -> u64 {
+    
+
     todo!()
 }
 
 // Part 2
-fn calc_second_answer(values: Vec<u32>) -> u64 {
+fn calc_second_answer(rock_points: &HashSet<(u16, u16)>) -> u64 {
     todo!()
 }
 
@@ -49,8 +81,8 @@ mod tests {
     #[test]
     fn day14_part1_test() {
         let mut day = Day::new(14, FILE.to_string());
-        let rockpaths = parse_input(&day);
-        println!("{:?}", rockpaths);
+        let rock_points = get_rock_points(parse_input(&day));
+        println!("{:?}", rock_points);
 
         assert_eq!(7, 7);
 
