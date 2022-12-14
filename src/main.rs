@@ -15,4 +15,5 @@ fn main() {
     days::day12::print_answers();
     days::day13::print_answers();
     days::day14::print_answers();
+    days::day15::print_answers();
 }
