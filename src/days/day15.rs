@@ -1,7 +1,7 @@
 // Advent of Code 2022
 // Day 15: Beacon Exclusion Zone
 
-use std::io::BufRead;
+use std::{io::BufRead, collections::HashMap};
 use aoc2022::{Day, Part, Answer};
 
 const FILE: &str = "inputs/real/day15_input.txt";
@@ -9,7 +9,7 @@ const FILE: &str = "inputs/real/day15_input.txt";
 pub fn print_answers() {
     let mut day = Day::new(15, FILE.to_string());
 
-    let (positions_sensors, positions_beacons) = parse_input(&day);
+    //let positions_sensors_beacons = parse_input(&day);
 
     day.first_answer = Some(Answer::Num(0));
     day.second_answer = Some(Answer::Num(0));
@@ -18,9 +18,9 @@ pub fn print_answers() {
     day.print_answer(day.day_number, Part::Two, &day.second_answer);
 }
 
-fn parse_input(day: &Day) -> (Vec<(isize, isize)>, Vec<(isize, isize)>) {
-    let mut positions_sensors: Vec<(isize, isize)> = Vec::new();
-    let mut positions_beacons: Vec<(isize, isize)> = Vec::new();
+fn parse_input(day: &Day) -> HashMap<(isize, isize), Vec<(isize, isize)>> {
+    let mut beacon_sensors: HashMap<(isize, isize), Vec<(isize, isize)>> = HashMap::new();
+    let mut positions_sensors_beacons: Vec<((isize, isize), (isize, isize))> = Vec::new();
 
     for line in day.read_file().lines() {
         let content = line.unwrap()
@@ -34,20 +34,39 @@ fn parse_input(day: &Day) -> (Vec<(isize, isize)>, Vec<(isize, isize)>) {
         let sensor = (nums.next().unwrap(), nums.next().unwrap());
         let beacon = (nums.next().unwrap(), nums.next().unwrap());
 
-        positions_sensors.push(sensor);
-        positions_beacons.push(beacon);
+        create_or_add_to_hashmap(beacon, sensor, &mut beacon_sensors);
     }
 
-    (positions_sensors, positions_beacons)
+    beacon_sensors
+}
+
+// Helping function for parsing
+fn create_or_add_to_hashmap(k: (isize, isize), v: (isize, isize), hm: &mut HashMap<(isize, isize), Vec<(isize, isize)>>) {
+    if !hm.contains_key(&k) {
+        hm.insert(k, vec![v]);
+    } else {
+        hm.get_mut(&k).unwrap().push(v);
+    }
 }
 
 // Part 1
-fn count_positions_no_beacon_by_row(positions_sensors: &Vec<(isize, isize)>, positions_beacons: &Vec<(isize, isize)>, y: usize) -> u64 {
-    todo!()
+fn count_positions_no_beacon_by_row(beacon_sensors: &HashMap<(isize, isize), Vec<(isize, isize)>>, row: isize) -> u64 { //5350384
+    // Calculate distance from given row to sensors
+    // Different points on that row
+    let closest_sensors = beacon_sensors.keys()
+        .filter(|(_, y)| *y == row)
+        .flat_map(|k| beacon_sensors.get(k)
+            .unwrap()
+            .clone())
+        .collect::<Vec<(isize, isize)>>();
+    println!("{:?}", closest_sensors);
+    
+    
+    0
 }
 
 // Part 2
-fn calc_second_answer(positions_sensors: &Vec<(isize, isize)>, positions_beacons: &Vec<(isize, isize)>) -> u64 {
+fn calc_second_answer(beacon_sensors: &HashMap<(isize, isize), Vec<(isize, isize)>>) -> u64 {
     todo!()
 }
 
@@ -60,8 +79,9 @@ mod tests {
     #[test]
     fn day15_part1_test() {
         let mut day = Day::new(15, FILE.to_string());
-        let (positions_sensors, positions_beacons) = parse_input(&day);
-
+        let beacon_sensors = parse_input(&day);
+        //println!("{:?}", beacon_sensors);
+        count_positions_no_beacon_by_row(&beacon_sensors, 10);
         assert_eq!(26, 26);
 
         day.first_answer = Some(Answer::Num(0));

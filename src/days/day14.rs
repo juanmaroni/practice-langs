@@ -72,6 +72,26 @@ fn calc_second_answer(rock_points: &HashSet<(u16, u16)>) -> u64 {
     todo!()
 }
 
+// Helping function for Part 1
+fn simulate_sand_movement(rock_points: &HashSet<(u16, u16)>) {
+    let mut rock_points = rock_points.clone();
+    //let mut sand_points: HashSet<(u16, u16)> = HashSet::new();
+    let mut start: (u16, u16) = (500, 0);
+    let mut count_sand = 0;
+    
+    loop {
+        // Search the boundaries
+        let deepest_y = *rock_points.iter().map(|(_, y)| y).max().unwrap();
+        let deepest_x = *rock_points.iter().map(|(x, _)| x).max().unwrap();
+
+
+        let y = deepest_y - 1;
+
+        break;
+    }
+
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -82,7 +102,7 @@ mod tests {
     fn day14_part1_test() {
         let mut day = Day::new(14, FILE.to_string());
         let rock_points = get_rock_points(parse_input(&day));
-        println!("{:?}", rock_points);
+        simulate_sand_movement(&rock_points);
 
         assert_eq!(7, 7);
 

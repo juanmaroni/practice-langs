@@ -39,7 +39,7 @@ fn count_unique_positions_tail(motions: &Vec<(char, u8)>) -> u64 {
 }
 
 // Part 2
-fn calc_second_answer(motions: &Vec<(char, u8)>) -> u32 {
+fn count_unique_positions_last_tail(motions: &Vec<(char, u8)>) -> u32 {
     todo!()
 }
 
@@ -60,8 +60,6 @@ fn get_unique_positions(motions: &Vec<(char, u8)>) -> HashSet<(i16, i16)>{
             unique_positions_tail.insert(tail_pos);
         }        
     }
-
-    //println!("Unique: {:?}", unique_positions_tail);
     
     unique_positions_tail
 }
@@ -138,8 +136,9 @@ mod tests {
     fn day09_part2_test() {
         let mut day = Day::new(9, FILE.to_string());
         let motions = parse_input(&day);
+        // EACH TAIL BECOMES THE HEAD FOR THE NEXT KNOT
 
-        assert_eq!(5, 5);
+        assert_eq!(1, 1);
 
         day.second_answer = Some(Answer::Num(0));
     }
