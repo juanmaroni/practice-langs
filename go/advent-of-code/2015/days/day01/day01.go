@@ -1,5 +1,5 @@
 // Day 1: Not Quite Lisp
-package days
+package day01
 
 import (
 	"aoc2015/utils"
