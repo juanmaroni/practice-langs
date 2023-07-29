@@ -10,7 +10,9 @@ const input_prod = "inputs/day01/prod"
 
 func Day01() {
     directions := utils.ReadFile(input_prod)
-	answer1, answer2 := follow_directions(directions)
+	
+	// There is only one line
+	answer1, answer2 := follow_directions(directions[0])
 	fmt.Printf("Day 1, Part 1: %d\n", answer1)
 	fmt.Printf("Day 1, Part 2: %d\n", answer2)
 }
