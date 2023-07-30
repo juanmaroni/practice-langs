@@ -6,24 +6,24 @@ import (
 	"fmt"
 )
 
-const input_prod = "inputs/day01/prod"
+const inputProd = "inputs/day01/prod"
 
 func Day01() {
-    directions := utils.ReadFile(input_prod)
+    directions := utils.ReadFile(inputProd)
 	
 	// There is only one line
-	answer1, answer2 := follow_directions(directions[0])
+	answer1, answer2 := followDirections(directions[0])
 	fmt.Printf("Day 1, Part 1: %d\n", answer1)
 	fmt.Printf("Day 1, Part 2: %d\n", answer2)
 }
 
-func follow_directions(directions string) (int32, uint16) {
+func followDirections(directions string) (int32, uint16) {
 	// Part 1
 	var floor int32 = 0
 
 	// Part 2
-	var basement_found bool = false
-	var basement_entry_position uint16 = 0
+	var basementFound bool = false
+	var basementEntryPosition uint16 = 0
 
 	for i, step := range directions {
 		if step == '(' {
@@ -34,13 +34,13 @@ func follow_directions(directions string) (int32, uint16) {
 			continue
 		}
 
-		if !basement_found {
+		if !basementFound {
 			if floor == -1 {
-				basement_entry_position = uint16(i) + 1
-				basement_found = true
+				basementEntryPosition = uint16(i) + 1
+				basementFound = true
 			}
 		}
 	}
 
-	return floor, basement_entry_position
+	return floor, basementEntryPosition
 }
