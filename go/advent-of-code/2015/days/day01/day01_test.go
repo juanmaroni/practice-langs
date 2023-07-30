@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-const input_test = "../../inputs/day01/test"
+const inputTest = "../../inputs/day01/test"
 
 func TestPart1(t *testing.T) {
-	directions := utils.ReadFile(input_test)
-	floor, _ := follow_directions(directions[0])
+	directions := utils.ReadFile(inputTest)
+	floor, _ := followDirections(directions[0])
 
 	if floor != 3 {
 		t.Errorf("Got: %d; Expected: 3\n", floor)
@@ -17,10 +17,10 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	directions := utils.ReadFile(input_test)
-	_, basement_entry_position := follow_directions(directions[0])
+	directions := utils.ReadFile(inputTest)
+	_, basementEntryPosition := followDirections(directions[0])
 
-	if basement_entry_position != 1 {
-		t.Errorf("Got: %d; Expected: 1\n", basement_entry_position)
+	if basementEntryPosition != 1 {
+		t.Errorf("Got: %d; Expected: 1\n", basementEntryPosition)
 	}
 }
