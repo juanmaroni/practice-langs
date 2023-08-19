@@ -26,9 +26,9 @@ func findLowestPositive(secretKey string) (uint64, uint64) {
 
 	for fiveZeroes == 0 || sixZeroes == 0 {
 		// Add current count as bytes
-		data_cp := append(data, []byte (strconv.FormatUint(count, 10))...)
+		data_cp := append(data, []byte(strconv.FormatUint(count, 10))...)
 		// Get MD5 hash
-		hash := md5.Sum([]byte (data_cp))
+		hash := md5.Sum([]byte(data_cp))
 		// Get hash as hexadecimal
 		hex := hex.EncodeToString(hash[:])
 

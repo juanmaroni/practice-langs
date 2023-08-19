@@ -9,8 +9,8 @@ import (
 const inputProd = "inputs/day01/prod"
 
 func Day01() {
-    directions := utils.ReadFile(inputProd)
-	
+	directions := utils.ReadFile(inputProd)
+
 	// There is only one line
 	answer1, answer2 := followDirections(directions[0])
 	fmt.Printf("Day 1, Part 1: %d\n", answer1)

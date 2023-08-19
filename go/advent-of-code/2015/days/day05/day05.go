@@ -21,7 +21,7 @@ func Day05() {
 func countNiceStrings(strings []string) (uint16, uint16) {
 	var niceStrings uint16 = 0
 	var niceStringsImproved uint16 = 0
-	
+
 	re := regexp.MustCompile(`^(?=(?:[^aeiou]*[aeiou]){3})(?=.*([a-zA-Z])\1)(?!.*(?:ab|cd|pq|xy))[a-zA-Z]+$`, 0)
 	reImproved := regexp.MustCompile(`^(?=.*([a-zA-Z]{2}).*\1)(?=.*([a-zA-Z])[a-zA-Z]\2).*$`, 0)
 

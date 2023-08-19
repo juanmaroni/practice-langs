@@ -12,7 +12,7 @@ import (
 const inputProd = "inputs/day02/prod"
 
 func Day02() {
-    presents := utils.ReadFile(inputProd)
+	presents := utils.ReadFile(inputProd)
 	requiredPaper, requiredRibbon := calcRequiredMaterial(presents)
 	fmt.Printf("Day 2, Part 1: %d\n", requiredPaper)
 	fmt.Printf("Day 2, Part 2: %d\n", requiredRibbon)
@@ -31,20 +31,20 @@ func calcRequiredMaterial(presents []string) (uint64, uint64) {
 		h := parseUintOrPanic(nums[2])
 
 		// Order the values
-		measures := []uint64 {l, w, h}
+		measures := []uint64{l, w, h}
 		sort.Slice(measures, func(i, j int) bool { return measures[i] < measures[j] })
 
 		// Doesn't matter which is which
 		v1 := measures[0]
 		v2 := measures[1]
 		v3 := measures[2]
-		
+
 		// Part 1
-		area := 2 * v1 * v2 + 2 * v1 * v3 + 2 * v2 * v3 + v1 * v2
+		area := 2*v1*v2 + 2*v1*v3 + 2*v2*v3 + v1*v2
 		totalWrappingPaper += area
 
 		// Part 2
-		totalRibbon += v1 * 2 + v2 * 2 + v1 * v2* v3
+		totalRibbon += v1*2 + v2*2 + v1*v2*v3
 	}
 
 	return totalWrappingPaper, totalRibbon

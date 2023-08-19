@@ -14,38 +14,38 @@ const inputProd = "inputs/day06/prod"
 type action int8
 
 const (
-	Off action = -1
-	On action = 1
+	Off    action = -1
+	On     action = 1
 	Toggle action = 2
 )
 
 type point struct {
-    x, y uint16
+	x, y uint16
 }
 
 type instruction struct {
-	action action
+	action        action
 	start, finish point
 }
 
 func Day06() {
 	instructions := utils.ReadFile(inputProd)
-	
+
 	litLights, brightness := toggleLights(instructions)
 	fmt.Printf("Day 6, Part 1: %d\n", litLights)
 	fmt.Printf("Day 6, Part 2: %d\n", brightness)
 }
 
 func toggleLights(instructions []string) (uint32, uint32) {
-    var lightGrid [1000][1000]bool
-	var brightGrid[1000][1000]uint16
+	var lightGrid [1000][1000]bool
+	var brightGrid [1000][1000]uint16
 
 	var litLights uint32 = 0
 	var brightness uint32 = 0
 
 	re := regexp.MustCompile(`^\b(turn on|turn off|toggle)\b (\d+),(\d+) \bthrough\b (\d+),(\d+)$`)
 
-    for _, inst := range instructions {
+	for _, inst := range instructions {
 		instruction := parseInstruction(*re, inst)
 		action := instruction.action
 		startX := instruction.start.x
@@ -59,16 +59,16 @@ func toggleLights(instructions []string) (uint32, uint32) {
 				for j := startY; j <= finishY; j++ {
 					currentPoint := lightGrid[i][j]
 					lightGrid[i][j] = true
-					
+
 					// Has the light changed?
 					if lightGrid[i][j] != currentPoint {
 						litLights += 1
 					}
 
-					brightGrid[i][j] += 1					
+					brightGrid[i][j] += 1
 					brightness += 1
 				}
-			}			
+			}
 		} else if action == Off {
 			for i := startX; i <= finishX; i++ {
 				for j := startY; j <= finishY; j++ {
@@ -103,14 +103,14 @@ func toggleLights(instructions []string) (uint32, uint32) {
 				}
 			}
 		}
-    }
+	}
 
 	return litLights, brightness
 }
 
 func parseInstruction(re regexp.Regexp, instr string) instruction {
 	groups := re.FindStringSubmatch(instr)
-	
+
 	// Action
 	var action action
 	actionStr := groups[1]
@@ -133,9 +133,9 @@ func parseInstruction(re regexp.Regexp, instr string) instruction {
 	finishX, _ := strconv.ParseUint(groups[4], 10, 32)
 	finishY, _ := strconv.ParseUint(groups[5], 10, 32)
 
-    return instruction{
+	return instruction{
 		action,
-		point{ uint16(startX), uint16(startY) },
-		point{ uint16(finishX), uint16(finishY) },
+		point{uint16(startX), uint16(startY)},
+		point{uint16(finishX), uint16(finishY)},
 	}
 }

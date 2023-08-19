@@ -47,20 +47,20 @@ func Day03() {
 
 func visitHouses(directions string) (uint16, uint16) {
 	// Part 1
-	currentPosition := point{ 0, 0 }
-	visitedHouses := []point { currentPosition }
+	currentPosition := point{0, 0}
+	visitedHouses := []point{currentPosition}
 
 	// Part 2
-	santaCurrentPosition := point{ 0, 0 }
-	robosantaCurrentPosition := point{ 0, 0 }
-	visitedHousesWithRobo := []point { santaCurrentPosition }
+	santaCurrentPosition := point{0, 0}
+	robosantaCurrentPosition := point{0, 0}
+	visitedHousesWithRobo := []point{santaCurrentPosition}
 
 	for i, dir := range directions {
 		// Part 1
 		visitedHouses = moveAndCheckVisited(&currentPosition, dir, visitedHouses)
-		
+
 		// Part 2
-		if i % 2 == 0 {
+		if i%2 == 0 {
 			visitedHousesWithRobo = moveAndCheckVisited(&santaCurrentPosition, dir, visitedHousesWithRobo)
 		} else {
 			visitedHousesWithRobo = moveAndCheckVisited(&robosantaCurrentPosition, dir, visitedHousesWithRobo)
